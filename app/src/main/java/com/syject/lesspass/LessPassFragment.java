@@ -3,47 +3,61 @@ package com.syject.lesspass;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.TextChange;
+import org.androidannotations.annotations.ViewById;
+
+@OptionsMenu(R.menu.fragment_less_pass)
+@EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment {
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    private static final String TAG = "LessPassFragment";
+
+    @ViewById(R.id.site_edit_text)
+    protected EditText site;
+
+    @ViewById(R.id.login_edit_text)
+    protected EditText login;
+
+    @ViewById(R.id.master_password_edit_text)
+    protected EditText masterPassword;
+
+    @ViewById
+    protected TextView password;
+
+    @TextChange(R.id.site_edit_text)
+    protected void onSiteChange(TextView site) {
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_less_pass, container, false);
-        return view;
+    @OptionsItem(R.id.action_login)
+    void login() {
+        Toast.makeText(getActivity(), "login", Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_less_pass, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_login:
-                Toast.makeText(getActivity(), "text", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    @Click(R.id.copy_button)
+    void copyPassword() {
+        if (password != null && !password.getText().equals("")) {
+            Toast.makeText(getActivity(), "Copied!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "Generate password firstly!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public static LessPassFragment newInstance() {
-        return new LessPassFragment();
+        return LessPassFragment_.builder().build();
     }
 }

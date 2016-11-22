@@ -16,4 +16,7 @@
     <string name="length">Length</string>
     <string name="counter">Counter</string>
 
+    <string name="default_lenght">12</string>
+    <string name="default_counter">1</string>
+
 </resources>
