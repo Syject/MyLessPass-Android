@@ -5,8 +5,10 @@
     <string name="hint_site">Site</string>
     <string name="hint_login">Login</string>
     <string name="hint_master_password">Master password</string>
+    <string name="password">password</string>
 
     <string name="copy">Copy</string>
+    <string name="copied">Copied!</string>
     <string name="password_options">Password Options</string>
     <string name="abc">abc</string>
     <string name="abc_upper">ABC</string>

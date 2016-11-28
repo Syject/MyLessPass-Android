@@ -14,6 +14,7 @@ ext {
     //Libraries
     rxJavaVersion = '1.2.3'
     rxAndroidVersion = '1.2.1'
+    rxBindingVersion = '0.4.0'
     AAVersion = '4.1.0'
     appcompatVersion = 'v7:25.0.0'
 
@@ -27,6 +28,7 @@ ext {
     presentationDependencies = [
             rxJava    : "io.reactivex:rxjava:${rxJavaVersion}",
             rxAndroid : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            rxBinding : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
             AA        : "org.androidannotations:androidannotations:${AAVersion}",
             AACompiler: "org.androidannotations:androidannotations-api:${AAVersion}",
             appcompat : "com.android.support:appcompat-${appcompatVersion}",
