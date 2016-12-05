@@ -6,18 +6,18 @@ import android.widget.TextView;
 
 public interface ILessPassView {
 
-    EditText getSiteView();
-    EditText getLoginView();
-    EditText getMasterPasswordView();
-    TextView getPasswordView();
+    String getSite();
+    String getLogin();
+    String getMasterPassword();
+    String getPassword();
 
-    EditText getLengthView();
-    EditText getCounterView();
+    int getLength();
+    int getCounter();
 
-    CheckBox hasLowerCaseLittersView();
-    CheckBox hasAppearCaseLittersView();
-    CheckBox hasNumbersView();
-    CheckBox hasSymbolsView();
+    boolean hasLowerCaseLitters();
+    boolean hasAppearCaseLitters();
+    boolean hasNumbers();
+    boolean hasSymbols();
 
     void onValidationLengthError();
     void onValidationCounterError();

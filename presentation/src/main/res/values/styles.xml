@@ -9,13 +9,33 @@
     </style>
 
     <style name="LessPassFields">
-        <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
         <item name="android:padding">8dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:background">@drawable/edit_text_border</item>
     </style>
 
-    <style name="LessPassChecks">
+    <style name="LessPass_marginLeft">
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginLeft">8dp</item>
+    </style>
+
+    <style name="LessPassLeftRight">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="LessPassButtonPrimary">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/button_primary</item>
+    </style>
+
+    <style name="LessPassButton">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:background">@drawable/button</item>
     </style>
 
 </resources>

@@ -4,16 +4,28 @@ import android.text.TextUtils;
 
 public class LessPassHelper {
     
-    public static boolean validateLength(CharSequence length) {
+    public static boolean validateLength(CharSequence value) {
+        return !TextUtils.isEmpty(value);
+    }
+
+    public static boolean validateNumbers(CharSequence value) {
         try {
-            convertInt(length);
+            convertInt(value);
         } catch (NumberFormatException e) {
             return false;
         }
         return true;
     }
 
-    public static Integer convertInt(CharSequence cs) {
-        return Integer.parseInt(cs.toString());
+    public static Integer convertInt(CharSequence value) {
+        return Integer.parseInt(value.toString());
+    }
+
+    public static Integer getInt(CharSequence value) {
+        try {
+            return convertInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

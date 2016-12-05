@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/LessPassLeftRight">
 
     <EditText
         android:id="@+id/site_edit_text"
@@ -12,9 +13,7 @@
         style="@style/LessPassFields"
         android:drawableStart="@drawable/ic_computer_black_18dp"
         android:drawableLeft="@drawable/ic_computer_black_18dp"
-        android:drawablePadding="8dp"
-        android:hint="@string/hint_site"
-        android:background="@drawable/edit_text_border"/>
+        android:hint="@string/hint_site"/>
 
     <EditText
         android:id="@+id/login_edit_text"
@@ -23,9 +22,7 @@
         style="@style/LessPassFields"
         android:drawableStart="@drawable/ic_person_black_18dp"
         android:drawableLeft="@drawable/ic_person_black_18dp"
-        android:drawablePadding="8dp"
-        android:hint="@string/hint_login"
-        android:background="@drawable/edit_text_border"/>
+        android:hint="@string/hint_login"/>
 
     <EditText
         android:id="@+id/master_password_edit_text"
@@ -34,16 +31,13 @@
         style="@style/LessPassFields"
         android:drawableStart="@android:drawable/ic_secure"
         android:drawableLeft="@android:drawable/ic_secure"
-        android:drawablePadding="8dp"
         android:hint="@string/hint_master_password"
-        android:inputType="textPassword"
-        android:background="@drawable/edit_text_border"/>
+        android:inputType="textPassword"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/password"
@@ -59,9 +53,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:text="@string/copy"
-            android:textColor="@color/colorWhite"/>
+            style="@style/LessPassButtonPrimary"
+            android:text="@string/copy"/>
 
     </LinearLayout>
 
@@ -69,18 +62,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/password_options"
-        android:layout_margin="16dp"
         android:padding="8dp"
+        android:layout_marginTop="16dp"
         style="?android:listSeparatorTextViewStyle"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:padding="8dp">
 
         <CheckBox
@@ -94,21 +83,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/abc_upper"
-            style="@style/LessPassChecks"
+            style="@style/LessPass_marginLeft"
             android:checked="true"/>
         <CheckBox
             android:id="@+id/hasNumbers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numbers"
-            style="@style/LessPassChecks"
+            style="@style/LessPass_marginLeft"
             android:checked="true"/>
         <CheckBox
             android:id="@+id/hasSymbols"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/symbols"
-            style="@style/LessPassChecks"
+            style="@style/LessPass_marginLeft"
             android:checked="true"/>
 
     </LinearLayout>
@@ -116,8 +105,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"

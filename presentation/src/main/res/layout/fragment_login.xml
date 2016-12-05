@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              style="@style/LessPassLeftRight">
+
+    <EditText
+        android:id="@+id/email_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LessPassFields"
+        android:drawableStart="@drawable/ic_email_black_18dp"
+        android:drawableLeft="@drawable/ic_email_black_18dp"
+        android:hint="@string/hint_email"/>
+
+    <EditText
+        android:id="@+id/less_password_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LessPassFields"
+        android:drawableStart="@android:drawable/ic_secure"
+        android:drawableLeft="@android:drawable/ic_secure"
+        android:hint="@string/hint_less_password"
+        android:inputType="textPassword"/>
+
+    <CheckBox
+        android:id="@+id/master_password_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/use_master_password"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in"
+            style="@style/LessPassButtonPrimary"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            style="@style/LessPassButton"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/params"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/ic_tune_black_18dp"
+            style="@style/LessPassButton"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/host_liner_layoit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/self_hosted"
+            android:textColor="@color/colorBlack"/>
+
+        <EditText
+            android:id="@+id/host_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LessPassFields"
+            android:drawableStart="@drawable/ic_http_black_18dp"
+            android:drawableLeft="@drawable/ic_http_black_18dp"
+            android:hint="@string/hint_less_database"
+            android:text="@string/less_database"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/own_hosted"/>
+
+    </LinearLayout>
+
+</LinearLayout>

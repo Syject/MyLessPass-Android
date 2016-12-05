@@ -6,6 +6,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding.widget.RxCompoundButton;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.syject.lesspass.LessPassHelper;
 import com.syject.lesspass.R;
 import com.syject.lesspass.presenters.LessPassPresenter;
 import com.syject.lesspass.views.ILessPassView;
@@ -15,11 +18,11 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
-@OptionsMenu(R.menu.fragment_less_pass)
+import rx.Observable;
+import rx.Subscription;
+
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {
 
@@ -58,6 +61,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById
     protected EditText counter;
 
+    private Subscription subscription;
+
     @AfterInject
     protected void afterInject() {
         presenter.setView(this);
@@ -65,12 +70,29 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @AfterViews
     protected void initViews() {
-        presenter.initView();
-    }
+        subscription = Observable.combineLatest(
+                RxTextView.textChanges(site)
+                        .filter(LessPassHelper::validateLength),
+                RxTextView.textChanges(login)
+                        .filter(LessPassHelper::validateLength),
+                RxTextView.textChanges(masterPassword)
+                        .filter(LessPassHelper::validateLength),
+                RxTextView.textChanges(length)
+                        .filter(LessPassHelper::validateNumbers),
+                RxTextView.textChanges(counter)
+                        .filter(LessPassHelper::validateNumbers),
+                RxCompoundButton.checkedChanges(hasLowerCaseLitters),
+                RxCompoundButton.checkedChanges(hasAppearCaseLitters),
+                RxCompoundButton.checkedChanges(hasNumbers),
+                RxCompoundButton.checkedChanges(hasSymbols),
 
-    @OptionsItem(R.id.action_login)
-    void login() {
-        presenter.login();
+                (s, l, mp, len, c, lcl, acl, n, sym) -> {
+                    Toast.makeText(getActivity(), "Work", Toast.LENGTH_SHORT).show();
+                    return "";
+                }
+        )
+                .filter(pass -> pass != null)
+                .subscribe(pass -> password.setText(pass));
     }
 
     @Click(R.id.copy_button)
@@ -78,33 +100,58 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         presenter.copyToClipboard();
     }
 
-    //@Override
-    public void onValidationFailed(Exception e) {
-
-    }
-
     public static LessPassFragment newInstance() {
         return LessPassFragment_.builder().build();
     }
 
     @Override
-    public CheckBox hasLowerCaseLittersView() {
-        return hasLowerCaseLitters;
+    public String getSite() {
+        return site.getText().toString();
     }
 
     @Override
-    public CheckBox hasAppearCaseLittersView() {
-        return hasAppearCaseLitters;
+    public String getLogin() {
+        return login.getText().toString();
     }
 
     @Override
-    public CheckBox hasNumbersView() {
-        return hasNumbers;
+    public String getMasterPassword() {
+        return masterPassword.getText().toString();
     }
 
     @Override
-    public CheckBox hasSymbolsView() {
-        return hasSymbols;
+    public String getPassword() {
+        return password.getText().toString();
+    }
+
+    @Override
+    public int getLength() {
+        return LessPassHelper.getInt(length.getText().toString());
+    }
+
+    @Override
+    public int getCounter() {
+        return LessPassHelper.getInt(counter.getText().toString());
+    }
+
+    @Override
+    public boolean hasLowerCaseLitters() {
+        return hasLowerCaseLitters.isChecked();
+    }
+
+    @Override
+    public boolean hasAppearCaseLitters() {
+        return hasAppearCaseLitters.isChecked();
+    }
+
+    @Override
+    public boolean hasNumbers() {
+        return hasNumbers.isChecked();
+    }
+
+    @Override
+    public boolean hasSymbols() {
+        return hasSymbols.isChecked();
     }
 
     @Override
@@ -115,36 +162,6 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @Override
     public void onValidationCounterError() {
         counter.setError("Counter is incorrect!");
-    }
-
-    @Override
-    public EditText getLengthView() {
-        return length;
-    }
-
-    @Override
-    public EditText getCounterView() {
-        return counter;
-    }
-
-    @Override
-    public EditText getSiteView() {
-        return site;
-    }
-
-    @Override
-    public EditText getLoginView() {
-        return login;
-    }
-
-    @Override
-    public EditText getMasterPasswordView() {
-        return masterPassword;
-    }
-
-    @Override
-    public TextView getPasswordView() {
-        return password;
     }
 
     @Override
@@ -163,6 +180,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     public void onDestroyView() {
         super.onDestroyView();
         presenter.destroy();
+        subscription.unsubscribe();
     }
 
     /*public static byte[] getEncryptedPassword(String password, byte[] salt,  int iterations,  int derivedKeyLength) throws NoSuchAlgorithmException, InvalidKeySpecException {

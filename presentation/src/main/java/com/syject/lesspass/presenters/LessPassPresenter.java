@@ -6,20 +6,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.domain.Template;
 import com.syject.domain.utils.PasswordUtils;
-import com.syject.lesspass.LessPassHelper;
 import com.syject.lesspass.R;
 import com.syject.lesspass.views.ILessPassView;
 
 import org.androidannotations.annotations.EBean;
-
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 @EBean
 public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPassView> {
@@ -29,7 +21,6 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     private ILessPassView lessPassView;
     private Context context;
-    private Subscription subscription;
 
     public LessPassPresenter(Context context) {
         this.context = context;
@@ -46,10 +37,10 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         //counter = LessPassHelper.convertInt(lessPassView.getCounterView().getText().toString());
 
         Template template = new Template(
-                lessPassView.hasLowerCaseLittersView().isChecked(),
-                lessPassView.hasAppearCaseLittersView().isChecked(),
-                lessPassView.hasNumbersView().isChecked(),
-                lessPassView.hasSymbolsView().isChecked(),
+                lessPassView.hasLowerCaseLitters(),
+                lessPassView.hasAppearCaseLitters(),
+                lessPassView.hasNumbers(),
+                lessPassView.hasSymbols(),
                 length,
                 counter
         );
@@ -63,51 +54,13 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Override
     public void copyToClipboard() {
-        String password = lessPassView.getPasswordView().toString();
+        String password = lessPassView.getPassword();
         if (password != null && !password.equals("")) {
             ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData data = ClipData.newPlainText(context.getString(R.string.password), password);
             clipboardManager.setPrimaryClip(data);
             Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void initView() {
-        subscription = Observable.combineLatest(
-                RxTextView.textChanges(lessPassView.getSiteView())
-                        .filter(s -> s.length() > 0),
-
-                RxTextView.textChanges(lessPassView.getLoginView())
-                        .filter(l -> l.length() > 0),
-
-                RxTextView.textChanges(lessPassView.getMasterPasswordView())
-                        .filter(mp -> mp.length() > 0),
-
-                RxTextView.textChanges(lessPassView.getLengthView())
-                        .filter(len -> {
-                            boolean b = LessPassHelper.validateLength(len);
-                            if (!b) {
-                                lessPassView.onValidationLengthError();
-                            }
-                            return b;
-                        })
-                        .map(LessPassHelper::convertInt),
-
-                RxTextView.textChanges(lessPassView.getCounterView())
-                        .filter(c -> {
-                            boolean b = LessPassHelper.validateLength(c);
-                            if (!b) {
-                                lessPassView.onValidationCounterError();
-                            }
-                            return b;
-                        })
-                        .map(LessPassHelper::convertInt),
-
-                (s, l, mp, len, c) -> generatePassword(s.toString(), l.toString(), mp.toString(), len, c)
-        )
-                .filter(pass -> pass != null)
-                .subscribe(pass -> lessPassView.getPasswordView().setText(pass));
     }
 
     @Override
@@ -128,6 +81,5 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public void destroy() {
         this.lessPassView = null;
-        subscription.unsubscribe();
     }
 }
