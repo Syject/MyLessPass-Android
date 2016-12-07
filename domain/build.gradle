@@ -1,17 +1,26 @@
-apply plugin: 'java'
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
-//noinspection GroovyUnusedAssignment
-sourceCompatibility = 1.7
-//noinspection GroovyUnusedAssignment
-targetCompatibility = 1.7
 
-configurations {
-    provided
-}
+android {
 
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+
+    publishNonDefault true
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+        versionCode globalConfiguration.getAt("androidVersionCode")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -19,6 +28,11 @@ dependencies {
     def domainDependencies = rootProject.ext.domainDependencies
     def domainTestDependencies = rootProject.ext.domainTestDependencies
 
+    apt domainDependencies.AA
     compile domainDependencies.rxJava
+    compile domainDependencies.appcompat
+    compile domainDependencies.AACompiler
     testCompile domainTestDependencies.junit
+
+    compile project(':data')
 }

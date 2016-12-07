@@ -27,9 +27,12 @@ dependencies {
     def dataDependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
 
-    compile project(':domain')
+    apt dataDependencies.AA
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
+    compile dataDependencies.AACompiler
+    compile dataDependencies.appcompat
+    compile dataDependencies.spongycastle
 
     testCompile testDependencies.junit
 }

@@ -10,6 +10,7 @@ public interface ILessPassView {
     String getLogin();
     String getMasterPassword();
     String getPassword();
+    void setPassword(String pass);
 
     int getLength();
     int getCounter();

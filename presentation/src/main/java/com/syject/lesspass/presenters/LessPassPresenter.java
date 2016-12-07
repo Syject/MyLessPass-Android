@@ -6,12 +6,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.syject.domain.Template;
-import com.syject.domain.utils.PasswordUtils;
+import com.syject.data.entities.Lesspass;
+import com.syject.data.entities.Template;
+import com.syject.domain.interactors.IPasswordInteractor;
+import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.lesspass.R;
 import com.syject.lesspass.views.ILessPassView;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+
+import rx.Observable;
 
 @EBean
 public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPassView> {
@@ -22,6 +27,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     private ILessPassView lessPassView;
     private Context context;
 
+    @Bean(PasswordInteractor.class)
+    protected IPasswordInteractor passwordInteractor;
+
     public LessPassPresenter(Context context) {
         this.context = context;
     }
@@ -31,24 +39,26 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         Toast.makeText(context, "login", Toast.LENGTH_LONG).show();
     }
 
-    private String generatePassword(String site, String login, String masterPassword, Integer length, Integer counter) {
+    @Override
+    public void generatePassword() {
 
-        //length = LessPassHelper.convertInt(lessPassView.getLengthView().getText().toString());
-        //counter = LessPassHelper.convertInt(lessPassView.getCounterView().getText().toString());
+        Template template = new Template.Builder()
+                .hasLowerCaseLitters(lessPassView.hasLowerCaseLitters())
+                .hasAppearCaseLitters(lessPassView.hasAppearCaseLitters())
+                .hasNumbers(lessPassView.hasNumbers())
+                .hasSymbols(lessPassView.hasSymbols())
+                .length(lessPassView.getLength())
+                .counter(lessPassView.getCounter())
+                    .build();
 
-        Template template = new Template(
-                lessPassView.hasLowerCaseLitters(),
-                lessPassView.hasAppearCaseLitters(),
-                lessPassView.hasNumbers(),
-                lessPassView.hasSymbols(),
-                length,
-                counter
+        Lesspass lesspass = new Lesspass(
+                lessPassView.getSite(),
+                lessPassView.getLogin(),
+                lessPassView.getMasterPassword()
         );
-        return PasswordUtils.generatePassword(
-                site,
-                login,
-                masterPassword,
-                template
+
+        lessPassView.setPassword(
+            passwordInteractor.getPassword(lesspass, template)
         );
     }
 

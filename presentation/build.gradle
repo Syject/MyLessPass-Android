@@ -37,7 +37,6 @@ dependencies {
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
 
     compile project(':domain')
-    compile project(':data')
 
     apt presentationDependencies.AA
     compile presentationDependencies.appcompat

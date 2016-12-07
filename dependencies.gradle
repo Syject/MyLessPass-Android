@@ -17,6 +17,7 @@ ext {
     rxBindingVersion = '0.4.0'
     AAVersion = '4.1.0'
     appcompatVersion = 'v7:25.0.0'
+    spongycastle = '1.54.0.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -41,7 +42,10 @@ ext {
     ]
 
     domainDependencies = [
-            rxJava: "io.reactivex:rxjava:${rxJavaVersion}",
+            AA        : "org.androidannotations:androidannotations:${AAVersion}",
+            AACompiler: "org.androidannotations:androidannotations-api:${AAVersion}",
+            rxJava    : "io.reactivex:rxjava:${rxJavaVersion}",
+            appcompat : "com.android.support:appcompat-${appcompatVersion}",
     ]
 
     domainTestDependencies = [
@@ -49,8 +53,12 @@ ext {
     ]
 
     dataDependencies = [
-            rxJava   : "io.reactivex:rxjava:${rxJavaVersion}",
-            rxAndroid: "io.reactivex:rxandroid:${rxAndroidVersion}",
+            AA          : "org.androidannotations:androidannotations:${AAVersion}",
+            AACompiler  : "org.androidannotations:androidannotations-api:${AAVersion}",
+            rxJava      : "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid   : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            appcompat   : "com.android.support:appcompat-${appcompatVersion}",
+            spongycastle: "com.madgag.spongycastle:core:${spongycastle}",
     ]
 
     dataTestDependencies = [

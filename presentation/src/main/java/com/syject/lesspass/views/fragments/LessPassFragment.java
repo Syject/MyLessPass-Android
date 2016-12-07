@@ -87,12 +87,12 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 RxCompoundButton.checkedChanges(hasSymbols),
 
                 (s, l, mp, len, c, lcl, acl, n, sym) -> {
-                    Toast.makeText(getActivity(), "Work", Toast.LENGTH_SHORT).show();
+                    presenter.generatePassword();
                     return "";
                 }
         )
-                .filter(pass -> pass != null)
-                .subscribe(pass -> password.setText(pass));
+                .filter(pass -> pass != "")
+                .subscribe(pass -> Toast.makeText(getActivity(), pass, Toast.LENGTH_SHORT).show());
     }
 
     @Click(R.id.copy_button)
@@ -165,6 +165,11 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
+    public void setPassword(String pass) {
+        password.setText(pass);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.resume();
@@ -182,12 +187,4 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         presenter.destroy();
         subscription.unsubscribe();
     }
-
-    /*public static byte[] getEncryptedPassword(String password, byte[] salt,  int iterations,  int derivedKeyLength) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength * 8);
-
-        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-
-        return f.generateSecret(spec).getEncoded();
-    }*/
 }
