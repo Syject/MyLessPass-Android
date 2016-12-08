@@ -5,6 +5,6 @@ import rx.Observable;
 public interface ILessPassPresenter {
 
     void login();
-    void generatePassword();
+    Observable<String> generatePassword();
     void copyToClipboard();
 }

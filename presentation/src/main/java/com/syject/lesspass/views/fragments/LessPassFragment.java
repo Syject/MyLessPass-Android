@@ -22,6 +22,9 @@ import org.androidannotations.annotations.ViewById;
 
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.exceptions.Exceptions;
+import rx.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {
@@ -86,13 +89,11 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 RxCompoundButton.checkedChanges(hasNumbers),
                 RxCompoundButton.checkedChanges(hasSymbols),
 
-                (s, l, mp, len, c, lcl, acl, n, sym) -> {
-                    presenter.generatePassword();
-                    return "";
-                }
+                (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
-                .filter(pass -> pass != "")
-                .subscribe(pass -> Toast.makeText(getActivity(), pass, Toast.LENGTH_SHORT).show());
+                .flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setPassword);
     }
 
     @Click(R.id.copy_button)

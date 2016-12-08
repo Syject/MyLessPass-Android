@@ -8,12 +8,14 @@ import com.syject.data.entities.Template;
 import java.math.BigInteger;
 import java.util.List;
 
+import rx.Observable;
+
 public interface IPasswordUtils {
 
-    String calcEntropy(Lesspass lesspass, Template template);
-    List<String> getConfiguredRules(Template template);
-    String getSetOfCharacters(List<String> rules);
+    Observable<String> calcEntropy(Lesspass lesspass, Template template);
+    Observable<List<String>> getConfiguredRules(Template template);
+    Observable<String> getSetOfCharacters(List<String> rules);
     Password consumeEntropy(String generatedPassword, BigInteger quotient, String setOfCharacters, int maxLength);
-    OneCharPerRule getOneCharPerRule(BigInteger entropy, List<String> rules);
-    String insertStringPseudoRandomly(String generatedPassword, BigInteger entropy, String string);
+    Observable<OneCharPerRule> getOneCharPerRule(BigInteger entropy, List<String> rules);
+    Observable<String> insertStringPseudoRandomly(String generatedPassword, BigInteger entropy, String string);
 }

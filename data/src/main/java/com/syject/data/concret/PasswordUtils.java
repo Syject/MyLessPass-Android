@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+
 @EBean
 public class PasswordUtils implements IPasswordUtils {
 
@@ -35,85 +37,121 @@ public class PasswordUtils implements IPasswordUtils {
     }
 
     @Override
-    public String calcEntropy(Lesspass lesspass, Template template) {
+    public Observable<String> calcEntropy(Lesspass lesspass, Template template) {
         String salt = lesspass.getSite() + lesspass.getLogin() + Integer.toString(template.getCounter(), 16);
 
-        switch (template.getDigest()) {
-            case Pbkdf2.SHA1:
-                try {
-                    byte[] bytes = Pbkdf2.getEncryptedPasswordSHA1(lesspass.getMasterPassword(), salt.getBytes(), 100000, template.getLength());
-                    return bytesToHex(bytes);
-                } catch (InvalidKeySpecException e) {
-                    return "Error in Pbkdf2";
-                }
-            default:
-                byte[] bytes = Pbkdf2.getEncryptedPasswordSHA256(lesspass.getMasterPassword(), salt.getBytes(), 100000, template.getLength());
-                return bytesToHex(bytes);
-        }
+        return Observable.just(salt)
+                .flatMap(s -> {
+                    switch (template.getDigest()) {
+                        case Pbkdf2.SHA1:
+                            try {
+                                byte[] bytes = Pbkdf2.getEncryptedPasswordSHA1(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getLength());
+                                return bytesToHex(bytes);
+                            } catch (InvalidKeySpecException e) {
+                                return Observable.error(e);
+                            }
+                        default:
+                            byte[] bytes = Pbkdf2.getEncryptedPasswordSHA256(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getLength());
+                            return bytesToHex(bytes);
+                    }
+                });
     }
 
     @Override
-    public List<String> getConfiguredRules(Template template) {
+    public Observable<List<String>> getConfiguredRules(Template template) {
         List<String> rules = new ArrayList<>();
 
-        if (template.isHasAppearCaseLitters())
-            rules.add(UPPERCASE);
-        if (template.isHasLowerCaseLitters())
-            rules.add(LOWERCASE);
-        if (template.isHasNumbers())
-            rules.add(NUMBERS);
-        if (template.isHasSymbols())
-            rules.add(SYMBOLS);
-
-        return rules;
+        return Observable.just(rules)
+                .map(rs -> {
+                    if (template.isHasAppearCaseLitters())
+                        rs.add(UPPERCASE);
+                    if (template.isHasLowerCaseLitters())
+                        rs.add(LOWERCASE);
+                    if (template.isHasNumbers())
+                        rs.add(NUMBERS);
+                    if (template.isHasSymbols())
+                        rs.add(SYMBOLS);
+                    return rs;
+                });
     }
 
     @Override
-    public String getSetOfCharacters(List<String> rules) {
-        if (rules.isEmpty()) {
-            return characterSubsets.get(LOWERCASE) + characterSubsets.get(UPPERCASE) +
-                    characterSubsets.get(NUMBERS) + characterSubsets.get(SYMBOLS);
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String rule : rules) {
-            sb.append(characterSubsets.get(rule));
-        }
-        return sb.toString();
+    public Observable<String> getSetOfCharacters(List<String> rules) {
+
+        return Observable.just(rules)
+                .flatMap(rs -> {
+                    if (rs.isEmpty()) {
+                        String set = characterSubsets.get(LOWERCASE) + characterSubsets.get(UPPERCASE) +
+                                characterSubsets.get(NUMBERS) + characterSubsets.get(SYMBOLS);
+                        return Observable.just(set);
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    for (String rule : rs) {
+                        sb.append(characterSubsets.get(rule));
+                    }
+                    return Observable.just(sb.toString());
+                });
     }
 
     @Override
     public Password consumeEntropy(String generatedPassword, BigInteger quotient, String setOfCharacters, int maxLength) {
+
         if (generatedPassword.toCharArray().length >= maxLength) {
             return new Password(generatedPassword, quotient);
         }
-
         LongDivision longDivision = Divmod.exec(quotient, BigInteger.valueOf(setOfCharacters.length()));
         generatedPassword += setOfCharacters.charAt(longDivision.getRemainder().intValue());
         return consumeEntropy(generatedPassword, longDivision.getQuotient(), setOfCharacters, maxLength);
     }
+    /*@Override
+    public Observable<Password> consumeEntropy(String generatedPassword, BigInteger quotient, String setOfCharacters, int maxLength) {
+
+        return Observable.just(generatedPassword)
+                .flatMap(gp -> {
+                    if (gp.toCharArray().length >= maxLength) {
+                        return Observable.just(new Password(gp, quotient));
+                    }
+                    LongDivision longDivision = Divmod.exec(quotient, BigInteger.valueOf(setOfCharacters.length()));
+                    gp += setOfCharacters.charAt(longDivision.getRemainder().intValue());
+                    return consumeEntropy(gp, longDivision.getQuotient(), setOfCharacters, maxLength);
+                });
+    }*/
 
     @Override
-    public OneCharPerRule getOneCharPerRule(BigInteger entropy, List<String> rules) {
-        String oneCharPerRules = "";
-        for (String rule : rules) {
-            Password password = consumeEntropy("", entropy, characterSubsets.get(rule), 1);
-            oneCharPerRules += password.getValue();
-            entropy = password.getEntropy();
-        }
-        return new OneCharPerRule(oneCharPerRules, entropy);
+    public Observable<OneCharPerRule> getOneCharPerRule(BigInteger entropy, List<String> rules) {
+        return Observable.just(entropy)
+                .flatMap(e -> {
+                    String oneCharPerRules = "";
+                    for (String rule : rules) {
+                        Password password = consumeEntropy("", e, characterSubsets.get(rule), 1);
+                        oneCharPerRules += password.getValue();
+                        e = password.getEntropy();
+                    }
+                    return Observable.just(new OneCharPerRule(oneCharPerRules, e));
+                });
     }
 
     @Override
-    public String insertStringPseudoRandomly(String generatedPassword, BigInteger entropy, String string) {
+    public Observable<String> insertStringPseudoRandomly(String generatedPassword, BigInteger entropy, String string) {
         for (int i = 0; i < string.length(); i++) {
             LongDivision longDivision = Divmod.exec(entropy, BigInteger.valueOf(generatedPassword.length()));
             generatedPassword = generatedPassword.substring(0, longDivision.getRemainder().intValue()) + string.charAt(i) + generatedPassword.substring(longDivision.getRemainder().intValue());
             entropy = longDivision.getQuotient();
         }
-        return generatedPassword;
+        return Observable.just(generatedPassword);
     }
 
-    private String bytesToHex(byte[] bytes) {
+    private Observable<String> bytesToHex(byte[] array) {
+        BigInteger bi = new BigInteger(1, array);
+        String hex = bi.toString(16);
+        int paddingLength = (array.length * 2) - hex.length();
+        if (paddingLength > 0)
+            return Observable.just(String.format("%0" + paddingLength + "d", 0) + hex);
+        else
+            return Observable.just(hex);
+    }
+
+    private String bytesToHexOld(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;

@@ -7,5 +7,5 @@ import rx.Observable;
 
 public interface IPasswordInteractor {
 
-    String getPassword(Lesspass lesspass, Template template);
+    Observable<String> getPassword(Lesspass lesspass, Template template);
 }

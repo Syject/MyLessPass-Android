@@ -40,7 +40,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     }
 
     @Override
-    public void generatePassword() {
+    public Observable<String> generatePassword() {
 
         Template template = new Template.Builder()
                 .hasLowerCaseLitters(lessPassView.hasLowerCaseLitters())
@@ -57,9 +57,8 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                 lessPassView.getMasterPassword()
         );
 
-        lessPassView.setPassword(
-            passwordInteractor.getPassword(lesspass, template)
-        );
+        return passwordInteractor.getPassword(lesspass, template);
+        //lessPassView.setPassword(passwordInteractor.getPassword(lesspass, template));
     }
 
     @Override

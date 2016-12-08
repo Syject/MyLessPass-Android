@@ -14,6 +14,8 @@ import org.androidannotations.annotations.EBean;
 import java.math.BigInteger;
 import java.util.List;
 
+import rx.Observable;
+
 @EBean
 public class PasswordInteractor implements IPasswordInteractor {
 
@@ -21,12 +23,38 @@ public class PasswordInteractor implements IPasswordInteractor {
     protected IPasswordUtils passwordUtils;
 
     @Override
-    public String getPassword(Lesspass lesspass, Template template) {
-        String entropy = passwordUtils.calcEntropy(lesspass, template);
+    public Observable<String> getPassword(Lesspass lesspass, Template template) {
+        PasswordDataHolder dataHolder = new PasswordDataHolder();
+        return Observable.just(null)
+                .flatMap(v -> passwordUtils.calcEntropy(lesspass, template))
+                .map(e -> {
+                    dataHolder.entropy = e;
+                    return null;
+                })
+                .flatMap(v -> passwordUtils.getConfiguredRules(template))
+                .map(configuredRules -> {
+                    dataHolder.rules = configuredRules;
+                    return dataHolder.rules;
+                })
+                .flatMap(rs -> passwordUtils.getSetOfCharacters(rs))
+                .map(setOfCharacters -> {
+                    dataHolder.password = passwordUtils.consumeEntropy("", new BigInteger(dataHolder.entropy, 16), setOfCharacters, template.getLength() - dataHolder.rules.size());
+                    return dataHolder.password;
+                })
+                .flatMap(password -> passwordUtils.getOneCharPerRule(password.getEntropy(), dataHolder.rules))
+                .flatMap(charactersToAdd -> passwordUtils.insertStringPseudoRandomly(dataHolder.password.getValue(), charactersToAdd.getEntropy(), charactersToAdd.getValue()));
+    }
+
+    private static class PasswordDataHolder {
+        public String entropy;
+        public List<String> rules;
+        public Password password;
+    }
+
+    /*String entropy = passwordUtils.calcEntropy(lesspass, template);
         List<String> rules = passwordUtils.getConfiguredRules(template);
         String setOfCharacters = passwordUtils.getSetOfCharacters(rules);
         Password password = passwordUtils.consumeEntropy("", new BigInteger(entropy, 16), setOfCharacters, template.getLength() - rules.size());
         OneCharPerRule charactersToAdd  = passwordUtils.getOneCharPerRule(password.getEntropy(), rules);
-        return passwordUtils.insertStringPseudoRandomly(password.getValue(), charactersToAdd.getEntropy(), charactersToAdd.getValue());
-    }
+        return passwordUtils.insertStringPseudoRandomly(password.getValue(), charactersToAdd.getEntropy(), charactersToAdd.getValue());*/
 }
