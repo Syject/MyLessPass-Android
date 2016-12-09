@@ -33,7 +33,7 @@ public class PasswordUtils implements IPasswordUtils {
         characterSubsets.put(LOWERCASE, "abcdefghijklmnopqrstuvwxyz");
         characterSubsets.put(UPPERCASE, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         characterSubsets.put(NUMBERS, "0123456789");
-        characterSubsets.put(SYMBOLS, "!\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~");
+        characterSubsets.put(SYMBOLS, "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
     }
 
     @Override
@@ -45,13 +45,13 @@ public class PasswordUtils implements IPasswordUtils {
                     switch (template.getDigest()) {
                         case Pbkdf2.SHA1:
                             try {
-                                byte[] bytes = Pbkdf2.getEncryptedPasswordSHA1(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getLength());
+                                byte[] bytes = Pbkdf2.getEncryptedPasswordSHA1(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getKeylen());
                                 return bytesToHex(bytes);
                             } catch (InvalidKeySpecException e) {
                                 return Observable.error(e);
                             }
                         default:
-                            byte[] bytes = Pbkdf2.getEncryptedPasswordSHA256(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getLength());
+                            byte[] bytes = Pbkdf2.getEncryptedPasswordSHA256(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getKeylen());
                             return bytesToHex(bytes);
                     }
                 });
@@ -63,10 +63,10 @@ public class PasswordUtils implements IPasswordUtils {
 
         return Observable.just(rules)
                 .map(rs -> {
-                    if (template.isHasAppearCaseLitters())
-                        rs.add(UPPERCASE);
                     if (template.isHasLowerCaseLitters())
                         rs.add(LOWERCASE);
+                    if (template.isHasAppearCaseLitters())
+                        rs.add(UPPERCASE);
                     if (template.isHasNumbers())
                         rs.add(NUMBERS);
                     if (template.isHasSymbols())

@@ -21,7 +21,7 @@
     <string name="length">Length</string>
     <string name="counter">Counter</string>
 
-    <string name="default_lenght">12</string>
+    <string name="default_lenght">16</string>
     <string name="default_counter">1</string>
 
     <string name="use_master_password">Check me if you want to use your master password here.</string>

@@ -8,6 +8,7 @@ public class Template {
     private boolean hasNumbers;
     private boolean hasSymbols;
     private int length;
+    private int keylen;
     private int counter;
     private String digest;
 
@@ -17,6 +18,7 @@ public class Template {
         private boolean hasNumbers = true;
         private boolean hasSymbols = true;
         private int length = 16;
+        private int keylen = 32;
         private int counter = 1;
         private String digest = Pbkdf2.SHA256;
 
@@ -55,6 +57,11 @@ public class Template {
             return this;
         }
 
+        public Builder keylen(int keyl) {
+            keylen = keyl;
+            return this;
+        }
+
         public Template build() {
             return new Template(this);
         }
@@ -68,6 +75,7 @@ public class Template {
         length = builder.length;
         counter = builder.counter;
         digest = builder.digest;
+        keylen = builder.keylen;
     }
 
     public int getCounter() {
@@ -96,5 +104,9 @@ public class Template {
 
     public String getDigest() {
         return digest;
+    }
+
+    public int getKeylen() {
+        return keylen;
     }
 }
