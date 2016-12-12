@@ -103,19 +103,6 @@ public class PasswordUtils implements IPasswordUtils {
         generatedPassword += setOfCharacters.charAt(longDivision.getRemainder().intValue());
         return consumeEntropy(generatedPassword, longDivision.getQuotient(), setOfCharacters, maxLength);
     }
-    /*@Override
-    public Observable<Password> consumeEntropy(String generatedPassword, BigInteger quotient, String setOfCharacters, int maxLength) {
-
-        return Observable.just(generatedPassword)
-                .flatMap(gp -> {
-                    if (gp.toCharArray().length >= maxLength) {
-                        return Observable.just(new Password(gp, quotient));
-                    }
-                    LongDivision longDivision = Divmod.exec(quotient, BigInteger.valueOf(setOfCharacters.length()));
-                    gp += setOfCharacters.charAt(longDivision.getRemainder().intValue());
-                    return consumeEntropy(gp, longDivision.getQuotient(), setOfCharacters, maxLength);
-                });
-    }*/
 
     @Override
     public Observable<OneCharPerRule> getOneCharPerRule(BigInteger entropy, List<String> rules) {

@@ -34,114 +34,161 @@
         android:hint="@string/hint_master_password"
         android:inputType="textPassword"/>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/LessPassButtonPrimary"
+        android:text="@string/generate"/>
+
+    <TextView
+        android:id="@+id/mandatory_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="16dp"
+        android:text="@string/mandatory"
+        android:padding="16dp"
+        style="@style/LessPassError"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/generated_password_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/copy_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:src="@drawable/ic_content_copy_white_18dp"
+            style="@style/LessPassButtonPrimary"/>
 
         <TextView
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/colorGrayLighter"
             android:gravity="center"
+            style="@style/LessPassBorder"
+            android:textColor="@color/colorPrimary"
+            android:inputType="textPassword"
             android:text="Text to clip board"/>
 
+        <ImageButton
+            android:id="@+id/visibility_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:src="@drawable/ic_visibility_white_18dp"
+            style="@style/LessPassButtonPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/password_options_liner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password_options"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/textView"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <CheckBox
+                android:id="@+id/hasLowerCaseLitters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abc"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/hasAppearCaseLitters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abc_upper"
+                style="@style/LessPass_marginLeft"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/hasNumbers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/numbers"
+                style="@style/LessPass_marginLeft"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/hasSymbols"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/symbols"
+                style="@style/LessPass_marginLeft"
+                android:checked="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/length"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/length"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/edit_text_border"
+                android:text="@string/default_lenght"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/counter"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/counter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/edit_text_border"
+                android:text="@string/default_counter"/>
+
+        </LinearLayout>
+
         <Button
-            android:id="@+id/copy_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/LessPassButtonPrimary"
-            android:text="@string/copy"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/password_options"
-        android:padding="8dp"
-        android:layout_marginTop="16dp"
-        style="?android:listSeparatorTextViewStyle"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <CheckBox
-            android:id="@+id/hasLowerCaseLitters"
+            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/abc"
-            android:checked="true"/>
-        <CheckBox
-            android:id="@+id/hasAppearCaseLitters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/abc_upper"
-            style="@style/LessPass_marginLeft"
-            android:checked="true"/>
-        <CheckBox
-            android:id="@+id/hasNumbers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/numbers"
-            style="@style/LessPass_marginLeft"
-            android:checked="true"/>
-        <CheckBox
-            android:id="@+id/hasSymbols"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/symbols"
-            style="@style/LessPass_marginLeft"
-            android:checked="true"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/length"
-            android:layout_weight="1"
-            android:gravity="center"/>
-
-        <EditText
-            android:id="@+id/length"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:background="@drawable/edit_text_border"
-            android:text="@string/default_lenght"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/counter"
-            android:layout_weight="1"
-            android:gravity="center"/>
-
-        <EditText
-            android:id="@+id/counter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:background="@drawable/edit_text_border"
-            android:text="@string/default_counter"/>
-
-
+            android:text="@string/save_as_def"
+            android:minHeight="25dp"
+            android:minWidth="130dp"
+            style="@style/LessPassButton"/>
 
     </LinearLayout>
 

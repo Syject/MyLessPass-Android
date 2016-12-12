@@ -1,6 +1,7 @@
 package com.syject.lesspass.views.fragments;
 
 import android.support.v4.app.Fragment;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,6 +65,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById
     protected EditText counter;
 
+    @ViewById
+    protected Button generate;
+
     private Subscription subscription;
 
     @AfterInject
@@ -99,6 +103,11 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @Click(R.id.copy_button)
     void copyPassword() {
         presenter.copyToClipboard();
+    }
+
+    @Click
+    void generate() {
+        Toast.makeText(getActivity(), "Generating...", Toast.LENGTH_SHORT).show();
     }
 
     public static LessPassFragment newInstance() {

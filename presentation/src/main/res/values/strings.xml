@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">LessPass</string>
     <string name="security">Security</string>
+    <string name="log_in">Log In</string>
+    <string name="settings">Settings</string>
 
     <string name="hint_site">Site</string>
     <string name="hint_login">Login</string>
@@ -9,6 +11,8 @@
     <string name="hint_less_password">LessPass password</string>
     <string name="hint_less_database">LessPass Database (https://…)</string>
     <string name="password">password</string>
+    <string name="generate">Generate</string>
+
 
     <string name="copy">Copy</string>
     <string name="copied">Copied!</string>
@@ -24,6 +28,8 @@
     <string name="default_lenght">16</string>
     <string name="default_counter">1</string>
 
+    <string name="mandatory">site, login and master password fields are mandatory</string>
+
     <string name="use_master_password">Check me if you want to use your master password here.</string>
     <string name="use_master_password_expand">Your master password should not be saved on a database even encrypted. If you want to use your master password here, you can check the option. It will replace your master password with a LessPass generated password.</string>
 
@@ -33,4 +39,6 @@
     <string name="less_database">https://lesspass.com</string>
     <string name="self_hosted">Self Hosted Url</string>
     <string name="own_hosted">You can use your self hosted LessPass Database</string>
+
+    <string name="save_as_def">save as default</string>
 </resources>
