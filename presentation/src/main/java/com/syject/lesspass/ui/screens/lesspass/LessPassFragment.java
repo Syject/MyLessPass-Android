@@ -1,4 +1,4 @@
-package com.syject.lesspass.views.fragments;
+package com.syject.lesspass.ui.screens.lesspass;
 
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
@@ -9,15 +9,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
-import com.syject.lesspass.LessPassHelper;
 import com.syject.lesspass.R;
-import com.syject.lesspass.presenters.LessPassPresenter;
-import com.syject.lesspass.views.ILessPassView;
+import com.syject.lesspass.ui.LessPassHelper;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -29,9 +26,6 @@ import org.androidannotations.annotations.ViewById;
 
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.exceptions.Exceptions;
-import rx.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {

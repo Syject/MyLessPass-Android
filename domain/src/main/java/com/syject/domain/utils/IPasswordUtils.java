@@ -1,4 +1,4 @@
-package com.syject.data;
+package com.syject.domain.utils;
 
 import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.OneCharPerRule;

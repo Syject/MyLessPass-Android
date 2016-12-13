@@ -1,10 +1,9 @@
-package com.syject.lesspass.presenters;
+package com.syject.lesspass.ui.screens.lesspass;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.Toast;
 
 import com.syject.data.entities.Lesspass;
@@ -12,12 +11,11 @@ import com.syject.data.entities.Template;
 import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.lesspass.R;
-import com.syject.lesspass.views.ILessPassView;
+import com.syject.lesspass.presenters.IPresenter;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 

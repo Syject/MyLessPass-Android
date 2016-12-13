@@ -1,8 +1,10 @@
 package com.syject.data.entities;
 
-import com.syject.data.concret.Pbkdf2;
-
 public class Template {
+
+    public static final String SHA1 = "SHA1";
+    public static final String SHA256 = "SHA256";
+
     private boolean hasLowerCaseLitters;
     private boolean hasAppearCaseLitters;
     private boolean hasNumbers;
@@ -20,7 +22,7 @@ public class Template {
         private int length = 16;
         private int keylen = 32;
         private int counter = 1;
-        private String digest = Pbkdf2.SHA256;
+        private String digest = SHA256;
 
         public Builder hasLowerCaseLitters(boolean b) {
             hasLowerCaseLitters = b;

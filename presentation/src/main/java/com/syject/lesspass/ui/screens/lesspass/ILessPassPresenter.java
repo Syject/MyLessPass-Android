@@ -1,6 +1,4 @@
-package com.syject.lesspass.presenters;
-
-import rx.Observable;
+package com.syject.lesspass.ui.screens.lesspass;
 
 public interface ILessPassPresenter {
 

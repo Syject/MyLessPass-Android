@@ -1,4 +1,4 @@
-package com.syject.lesspass.views.activities;
+package com.syject.lesspass.ui;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

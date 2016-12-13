@@ -1,6 +1,5 @@
-package com.syject.data.concret;
+package com.syject.domain.utils;
 
-import com.syject.data.IPasswordUtils;
 import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.LongDivision;
 import com.syject.data.entities.OneCharPerRule;
@@ -43,7 +42,7 @@ public class PasswordUtils implements IPasswordUtils {
         return Observable.just(salt)
                 .flatMap(s -> {
                     switch (template.getDigest()) {
-                        case Pbkdf2.SHA1:
+                        case Template.SHA1:
                             try {
                                 byte[] bytes = Pbkdf2.getEncryptedPasswordSHA1(lesspass.getMasterPassword(), s.getBytes(), 100000, template.getKeylen());
                                 return bytesToHex(bytes);

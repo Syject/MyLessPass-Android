@@ -1,7 +1,4 @@
-package com.syject.data.concret;
-
-import android.util.Base64;
-import android.util.Log;
+package com.syject.domain.utils;
 
 import org.spongycastle.crypto.PBEParametersGenerator;
 import org.spongycastle.crypto.digests.SHA256Digest;
@@ -18,9 +15,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class Pbkdf2 {
-
-    public static final String SHA1 = "SHA1";
-    public static final String SHA256 = "SHA256";
 
     //SHA1
     public static byte[] getEncryptedPasswordSHA1(String password, byte[] salt, int iterations, int derivedKeyLength) throws InvalidKeySpecException {
@@ -54,13 +48,11 @@ public class Pbkdf2 {
             md.update(salt);
             byte[] bytes = md.digest(passwordToHash.getBytes("UTF-8"));
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return generatedPassword;

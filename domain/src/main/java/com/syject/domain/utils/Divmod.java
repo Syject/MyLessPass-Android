@@ -1,4 +1,4 @@
-package com.syject.data.concret;
+package com.syject.domain.utils;
 
 import com.syject.data.entities.LongDivision;
 

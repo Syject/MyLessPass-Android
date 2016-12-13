@@ -1,9 +1,8 @@
 package com.syject.domain.interactors.concret;
 
-import com.syject.data.IPasswordUtils;
-import com.syject.data.concret.PasswordUtils;
+import com.syject.domain.utils.IPasswordUtils;
+import com.syject.domain.utils.PasswordUtils;
 import com.syject.data.entities.Lesspass;
-import com.syject.data.entities.OneCharPerRule;
 import com.syject.data.entities.Password;
 import com.syject.data.entities.Template;
 import com.syject.domain.interactors.IPasswordInteractor;

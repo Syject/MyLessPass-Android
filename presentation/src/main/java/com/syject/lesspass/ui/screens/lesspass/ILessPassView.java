@@ -1,8 +1,4 @@
-package com.syject.lesspass.views;
-
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
+package com.syject.lesspass.ui.screens.lesspass;
 
 public interface ILessPassView {
 
