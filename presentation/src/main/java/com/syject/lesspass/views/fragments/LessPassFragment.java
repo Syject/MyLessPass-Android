@@ -1,12 +1,17 @@
 package com.syject.lesspass.views.fragments;
 
 import android.support.v4.app.Fragment;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.lesspass.LessPassHelper;
@@ -19,6 +24,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
 import rx.Observable;
@@ -34,6 +40,12 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @Bean
     LessPassPresenter presenter;
+
+    @InstanceState
+    boolean isSettingsExpanded;
+
+    @InstanceState
+    boolean isGeneratedPasswordExpanded;
 
     @ViewById(R.id.site_edit_text)
     protected EditText site;
@@ -68,6 +80,21 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById
     protected Button generate;
 
+    @ViewById(R.id.settings)
+    protected ImageButton settingsImageButton;
+
+    @ViewById
+    protected ImageButton visibilityImageButton;
+
+    @ViewById
+    protected LinearLayout passwordOptionsLinerLayout;
+
+    @ViewById
+    protected LinearLayout generatedPasswordLinearLayout;
+
+    @ViewById(R.id.mandatory_error)
+    protected TextView mandatoryErrorTextView;
+
     private Subscription subscription;
 
     @AfterInject
@@ -77,6 +104,18 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @AfterViews
     protected void initViews() {
+
+        togglePasswordOptions(isSettingsExpanded);
+        toggleGeneratedPassword(isGeneratedPasswordExpanded);
+
+        RxView.clicks(visibilityImageButton)
+                .map(b -> isGeneratedPasswordExpanded = !isGeneratedPasswordExpanded)
+                .subscribe(this::toggleGeneratedPassword);
+
+        RxView.clicks(settingsImageButton)
+                .map(b -> isSettingsExpanded = !isSettingsExpanded)
+                .subscribe(this::togglePasswordOptions);
+
         subscription = Observable.combineLatest(
                 RxTextView.textChanges(site)
                         .filter(LessPassHelper::validateLength),
@@ -95,9 +134,10 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
                 (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
-                .flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
+                .subscribe();
+                /*.flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setPassword);
+                .subscribe(this::setPassword);*/
     }
 
     @Click(R.id.copy_button)
@@ -107,7 +147,11 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @Click
     void generate() {
-        Toast.makeText(getActivity(), "Generating...", Toast.LENGTH_SHORT).show();
+        presenter.generatePassword();
+    }
+
+    @Click
+    void settings() {
     }
 
     public static LessPassFragment newInstance() {
@@ -165,6 +209,18 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
+    public void onValidationFailed() {
+        mandatoryErrorTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPasswordGenerated(String password) {
+        generate.setVisibility(View.GONE);
+        generatedPasswordLinearLayout.setVisibility(View.VISIBLE);
+        setPassword(password);
+    }
+
+    @Override
     public void onValidationLengthError() {
         length.setError("Length is incorrect!");
     }
@@ -196,5 +252,21 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         super.onDestroyView();
         presenter.destroy();
         subscription.unsubscribe();
+    }
+
+    private void toggleGeneratedPassword(boolean isGeneratedPasswordExpanded) {
+        if (isGeneratedPasswordExpanded) {
+            password.setTransformationMethod(null);
+        } else {
+            password.setTransformationMethod(new PasswordTransformationMethod());
+        }
+    }
+
+    private void togglePasswordOptions(boolean isPasswordOprionsExpanded) {
+        if (isPasswordOprionsExpanded) {
+            passwordOptionsLinerLayout.setVisibility(View.VISIBLE);
+        } else {
+            passwordOptionsLinerLayout.setVisibility(View.GONE);
+        }
     }
 }

@@ -34,12 +34,70 @@
         android:hint="@string/hint_master_password"
         android:inputType="textPassword"/>
 
-    <Button
-        android:id="@+id/generate"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/password_linear_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/LessPassButtonPrimary"
-        android:text="@string/generate"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/generate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/LessPassButtonPrimary"
+            android:text="@string/generate"/>
+
+        <LinearLayout
+            android:id="@+id/generated_password_linear_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/settings"
+            android:layout_toStartOf="@+id/settings"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/copy_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:src="@drawable/ic_content_copy_white_18dp"
+                style="@style/LessPassButtonPrimary"/>
+
+            <TextView
+                android:id="@+id/password"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                style="@style/LessPassBorder"
+                android:textColor="@color/colorPrimary"
+                android:inputType="textPassword"
+                android:text="Text to clip board"/>
+
+            <ImageButton
+                android:id="@+id/visibility_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:src="@drawable/ic_visibility_white_18dp"
+                style="@style/LessPassButtonPrimary"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_tune_black_18dp"
+            style="@style/LessPassButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
 
     <TextView
         android:id="@+id/mandatory_error"
@@ -50,43 +108,6 @@
         android:padding="16dp"
         style="@style/LessPassError"
         android:visibility="gone"/>
-
-    <LinearLayout
-        android:id="@+id/generated_password_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageButton
-            android:id="@+id/copy_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:src="@drawable/ic_content_copy_white_18dp"
-            style="@style/LessPassButtonPrimary"/>
-
-        <TextView
-            android:id="@+id/password"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:gravity="center"
-            style="@style/LessPassBorder"
-            android:textColor="@color/colorPrimary"
-            android:inputType="textPassword"
-            android:text="Text to clip board"/>
-
-        <ImageButton
-            android:id="@+id/visibility_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:src="@drawable/ic_visibility_white_18dp"
-            style="@style/LessPassButtonPrimary"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/password_options_liner_layout"

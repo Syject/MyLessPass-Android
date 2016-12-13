@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.Toast;
 
 import com.syject.data.entities.Lesspass;
@@ -17,6 +18,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @EBean
 public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPassView> {
@@ -40,7 +43,16 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     }
 
     @Override
-    public Observable<String> generatePassword() {
+    public void generatePassword() {
+
+        String site = lessPassView.getSite();
+        String login = lessPassView.getLogin();
+        String masterPassword = lessPassView.getMasterPassword();
+
+        if (site.equals("") || login.equals("") || masterPassword.equals("")) {
+            lessPassView.onValidationFailed();
+            return;
+        }
 
         Template template = new Template.Builder()
                 .hasLowerCaseLitters(lessPassView.hasLowerCaseLitters())
@@ -51,13 +63,12 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                 .counter(lessPassView.getCounter())
                     .build();
 
-        Lesspass lesspass = new Lesspass(
-                lessPassView.getSite(),
-                lessPassView.getLogin(),
-                lessPassView.getMasterPassword()
-        );
+        Lesspass lesspass = new Lesspass(site,login,masterPassword);
 
-        return passwordInteractor.getPassword(lesspass, template);
+        passwordInteractor.getPassword(lesspass, template)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(lessPassView::onPasswordGenerated);
         //lessPassView.setPassword(passwordInteractor.getPassword(lesspass, template));
     }
 

@@ -22,4 +22,6 @@ public interface ILessPassView {
 
     void onValidationLengthError();
     void onValidationCounterError();
+    void onValidationFailed();
+    void onPasswordGenerated(String password);
 }
