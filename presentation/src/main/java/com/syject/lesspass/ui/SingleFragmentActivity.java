@@ -1,9 +1,11 @@
 package com.syject.lesspass.ui;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.syject.lesspass.R;
@@ -14,9 +16,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (savedInstanceState == null)
-            showFragment(startFragment());
+            showFragment(startFragment(), false);
     }
 
     protected abstract Fragment startFragment();
@@ -26,11 +29,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         return R.layout.activity_fragment;
     }
 
-    protected void showFragment(Fragment fragment) {
+    protected void showFragment(Fragment fragment, boolean isAddToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+
+        FragmentTransaction ft = fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment);
+
+        if (isAddToBackStack) {
+            ft.addToBackStack(null);
+        }
+        ft.commit();
     }
 }

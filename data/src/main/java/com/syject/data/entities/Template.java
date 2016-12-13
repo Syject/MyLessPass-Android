@@ -4,6 +4,7 @@ public class Template {
 
     public static final String SHA1 = "SHA1";
     public static final String SHA256 = "SHA256";
+    public static final int len = 16;
 
     private boolean hasLowerCaseLitters;
     private boolean hasAppearCaseLitters;

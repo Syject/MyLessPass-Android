@@ -6,10 +6,10 @@ public interface ILessPassView {
     String getLogin();
     String getMasterPassword();
     String getPassword();
-    void setPassword(String pass);
+    String getLength();
+    String getCounter();
 
-    int getLength();
-    int getCounter();
+    void setPassword(String pass);
 
     boolean hasLowerCaseLitters();
     boolean hasAppearCaseLitters();
@@ -19,5 +19,7 @@ public interface ILessPassView {
     void onValidationLengthError();
     void onValidationCounterError();
     void onValidationFailed();
+    void onValidationSuccess();
     void onPasswordGenerated(String password);
+    void resetPasswordGenerated();
 }

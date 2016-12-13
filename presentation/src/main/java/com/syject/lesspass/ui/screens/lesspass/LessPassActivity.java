@@ -21,6 +21,6 @@ public class LessPassActivity extends SingleFragmentActivity {
 
     @OptionsItem(R.id.action_login)
     void login() {
-        showFragment(LoginFragment.newInstance());
+        showFragment(LoginFragment.newInstance(), true);
     }
 }

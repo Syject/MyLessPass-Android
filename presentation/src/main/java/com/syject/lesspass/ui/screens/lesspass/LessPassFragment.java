@@ -14,7 +14,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.lesspass.R;
-import com.syject.lesspass.ui.LessPassHelper;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -111,16 +110,11 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 .subscribe(this::togglePasswordOptions);
 
         subscription = Observable.combineLatest(
-                RxTextView.textChanges(site)
-                        .filter(LessPassHelper::validateLength),
-                RxTextView.textChanges(login)
-                        .filter(LessPassHelper::validateLength),
-                RxTextView.textChanges(masterPassword)
-                        .filter(LessPassHelper::validateLength),
-                RxTextView.textChanges(length)
-                        .filter(LessPassHelper::validateNumbers),
-                RxTextView.textChanges(counter)
-                        .filter(LessPassHelper::validateNumbers),
+                RxTextView.textChanges(site),
+                RxTextView.textChanges(login),
+                RxTextView.textChanges(masterPassword),
+                RxTextView.textChanges(length),
+                RxTextView.textChanges(counter),
                 RxCompoundButton.checkedChanges(hasLowerCaseLitters),
                 RxCompoundButton.checkedChanges(hasAppearCaseLitters),
                 RxCompoundButton.checkedChanges(hasNumbers),
@@ -128,7 +122,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
                 (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
-                .subscribe();
+                .subscribe(n -> resetPasswordGenerated());
                 /*.flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setPassword);*/
@@ -173,13 +167,13 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
-    public int getLength() {
-        return LessPassHelper.getInt(length.getText().toString());
+    public String getLength() {
+        return length.getText().toString();
     }
 
     @Override
-    public int getCounter() {
-        return LessPassHelper.getInt(counter.getText().toString());
+    public String getCounter() {
+        return counter.getText().toString();
     }
 
     @Override
@@ -208,10 +202,21 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
+    public void onValidationSuccess() {
+        mandatoryErrorTextView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onPasswordGenerated(String password) {
         generate.setVisibility(View.GONE);
         generatedPasswordLinearLayout.setVisibility(View.VISIBLE);
         setPassword(password);
+    }
+
+    @Override
+    public void resetPasswordGenerated() {
+        generatedPasswordLinearLayout.setVisibility(View.GONE);
+        generate.setVisibility(View.VISIBLE);
     }
 
     @Override

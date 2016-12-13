@@ -3,6 +3,7 @@ package com.syject.lesspass.ui.screens.lesspass;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.lesspass.R;
 import com.syject.lesspass.presenters.IPresenter;
+import com.syject.lesspass.ui.LessPassHelper;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -52,13 +54,31 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
             return;
         }
 
+        lessPassView.onValidationSuccess();
+
+        String length = lessPassView.getLength();
+        String counter = lessPassView.getCounter();
+
+        if (!LessPassHelper.validateNumbers(length)) {
+            lessPassView.onValidationLengthError();
+            return;
+        }
+
+        if (!LessPassHelper.validateNumbers(counter)) {
+            lessPassView.onValidationCounterError();
+            return;
+        }
+
+        int len = LessPassHelper.getInt(length);
+        len = len != 0 ? len : Template.len;
+
         Template template = new Template.Builder()
                 .hasLowerCaseLitters(lessPassView.hasLowerCaseLitters())
                 .hasAppearCaseLitters(lessPassView.hasAppearCaseLitters())
                 .hasNumbers(lessPassView.hasNumbers())
                 .hasSymbols(lessPassView.hasSymbols())
-                .length(lessPassView.getLength())
-                .counter(lessPassView.getCounter())
+                .length(len)
+                .counter(LessPassHelper.getInt(counter))
                     .build();
 
         Lesspass lesspass = new Lesspass(site,login,masterPassword);
@@ -66,7 +86,10 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         passwordInteractor.getPassword(lesspass, template)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lessPassView::onPasswordGenerated);
+                .subscribe(p -> {
+                    lessPassView.onPasswordGenerated(p);
+                    hidePasswordAfter(30000);
+                });
         //lessPassView.setPassword(passwordInteractor.getPassword(lesspass, template));
     }
 
@@ -78,6 +101,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
             ClipData data = ClipData.newPlainText(context.getString(R.string.password), password);
             clipboardManager.setPrimaryClip(data);
             Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
+            hidePasswordAfter(10000);
         }
     }
 
@@ -100,4 +124,12 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     public void destroy() {
         this.lessPassView = null;
     }
+
+    public void hidePasswordAfter(int delay) {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            lessPassView.resetPasswordGenerated();
+        }, delay);
+    }
+
 }
