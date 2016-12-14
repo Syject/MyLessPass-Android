@@ -13,6 +13,7 @@ import com.syject.data.entities.Template;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
+import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
 import com.syject.lesspass.presenters.IPresenter;
 import com.syject.domain.utils.LessPassHelper;
@@ -20,6 +21,7 @@ import com.syject.domain.utils.LessPassHelper;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,8 +30,11 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     private static final String TAG = "LessPassPresenter";
     private static final int DEBOUNCE_TIME = 1000; //1 sec
-
+    private final Handler handler = new Handler();
     private ILessPassView lessPassView;
+
+    private Runnable runnable;
+
     private Context context;
 
     @Bean(PasswordInteractor.class)
@@ -85,6 +90,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
         Lesspass lesspass = new Lesspass(site, login, masterPassword);
 
+        lessPassView.onPasswordGenerating();
         passwordInteractor.getPassword(lesspass, template)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -92,16 +98,13 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                     lessPassView.onPasswordGenerated(p);
                     hidePasswordAfter(30000);
                 });
-        //lessPassView.setPassword(passwordInteractor.getPassword(lesspass, template));
     }
 
     @Override
     public void copyToClipboard() {
         String password = lessPassView.getPassword();
         if (password != null && !password.equals("")) {
-            ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData data = ClipData.newPlainText(context.getString(R.string.password), password);
-            clipboardManager.setPrimaryClip(data);
+            SystemUtils.copyToClipboard(context, password, context.getString(R.string.password));
             Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
             hidePasswordAfter(10000);
         }
@@ -149,6 +152,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public void setView(@NonNull ILessPassView view) {
         this.lessPassView = view;
+        runnable = () -> lessPassView.resetPasswordGenerated(true);
     }
 
     @Override
@@ -167,10 +171,8 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     }
 
     public void hidePasswordAfter(int delay) {
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            lessPassView.resetPasswordGenerated(true);
-        }, delay);
+        handler.removeCallbacks(runnable);
+        handler.postDelayed(runnable, delay);
     }
 
 }

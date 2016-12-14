@@ -22,6 +22,7 @@ public interface ILessPassView {
     void onValidationCounterError();
     void onValidationFailed();
     void onValidationSuccess();
+    void onPasswordGenerating();
     void onPasswordGenerated(String password);
     void resetPasswordGenerated(boolean withMasterPass);
     void onOptionsNotSaved();

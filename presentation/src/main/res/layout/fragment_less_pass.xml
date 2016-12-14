@@ -41,12 +41,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/generate"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/LessPassButtonPrimary"
-            android:text="@string/generate"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/generate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LessPassButtonPrimary"
+                android:text="@string/generate"/>
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:theme="@style/WhiteProgress"
+                android:translationZ="10dp"
+                android:indeterminate="true" />
+        </FrameLayout>
+
+
 
         <LinearLayout
             android:id="@+id/generated_password_linear_layout"

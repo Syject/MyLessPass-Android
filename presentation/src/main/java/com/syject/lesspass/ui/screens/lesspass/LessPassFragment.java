@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -92,16 +93,19 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById(R.id.save_as_default)
     protected Button saveAsDefaultButton;
 
+    @ViewById
+    protected ProgressBar progressBar;
+
     private Subscription subscription;
 
-    @AfterInject
+    /*@AfterInject
     protected void afterInject() {
-        presenter.setView(this);
-    }
+    }*/
 
     @AfterViews
     protected void initViews() {
 
+        presenter.setView(this);
         presenter.initFields();
 
         togglePasswordOptions(isSettingsExpanded);
@@ -129,12 +133,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
                 .subscribe(n -> {
-                    resetPasswordGenerated(false);
+                    resetPasswordGenerated(true);
                     presenter.checkOptionsSaved();
                 });
-                /*.flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setPassword);*/
     }
 
     @Click(R.id.copy_button)
@@ -213,8 +214,17 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
+    public void onPasswordGenerating() {
+        generate.setText(null);
+        generate.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onPasswordGenerated(String password) {
+        generate.setText(R.string.generate);
         generate.setVisibility(View.GONE);
+        progressBar.setVisibility(View.INVISIBLE);
         generatedPasswordLinearLayout.setVisibility(View.VISIBLE);
         setPassword(password);
     }
@@ -224,6 +234,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         if (generatedPasswordLinearLayout.getVisibility() != View.GONE) {
             generatedPasswordLinearLayout.setVisibility(View.GONE);
             generate.setVisibility(View.VISIBLE);
+            generate.setEnabled(true);
             if (withMasterPass) {
                 masterPassword.setText(null);
             }
