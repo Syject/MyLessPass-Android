@@ -18,6 +18,7 @@ ext {
     AAVersion = '4.1.0'
     appcompatVersion = 'v7:25.0.0'
     spongycastle = '1.54.0.0'
+    gsonVersion = '2.8.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -59,6 +60,7 @@ ext {
             rxAndroid   : "io.reactivex:rxandroid:${rxAndroidVersion}",
             appcompat   : "com.android.support:appcompat-${appcompatVersion}",
             spongycastle: "com.madgag.spongycastle:core:${spongycastle}",
+            gson        : "com.google.code.gson:gson:${gsonVersion}"
     ]
 
     dataTestDependencies = [

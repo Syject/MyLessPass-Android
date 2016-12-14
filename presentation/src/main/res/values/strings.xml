@@ -41,4 +41,5 @@
     <string name="own_hosted">You can use your self hosted LessPass Database</string>
 
     <string name="save_as_def">save as default</string>
+    <string name="saved_as_def">saved as default</string>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.syject.data.entities.Options;
 import com.syject.lesspass.R;
 
 import org.androidannotations.annotations.AfterInject;
@@ -88,6 +89,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById(R.id.mandatory_error)
     protected TextView mandatoryErrorTextView;
 
+    @ViewById(R.id.save_as_default)
+    protected Button saveAsDefaultButton;
+
     private Subscription subscription;
 
     @AfterInject
@@ -97,6 +101,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @AfterViews
     protected void initViews() {
+
+        presenter.initFields();
 
         togglePasswordOptions(isSettingsExpanded);
         toggleGeneratedPassword(isGeneratedPasswordExpanded);
@@ -122,7 +128,10 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
                 (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
-                .subscribe(n -> resetPasswordGenerated());
+                .subscribe(n -> {
+                    resetPasswordGenerated();
+                    presenter.checkOptionsSaved();
+                });
                 /*.flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setPassword);*/
@@ -138,8 +147,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         presenter.generatePassword();
     }
 
-    @Click
-    void settings() {
+    @Click(R.id.save_as_default)
+    void saveAsDefault() {
+        presenter.saveOptionsAsDefault();
     }
 
     public static LessPassFragment newInstance() {
@@ -215,8 +225,36 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @Override
     public void resetPasswordGenerated() {
-        generatedPasswordLinearLayout.setVisibility(View.GONE);
-        generate.setVisibility(View.VISIBLE);
+        if (generatedPasswordLinearLayout.getVisibility() != View.GONE) {
+            generatedPasswordLinearLayout.setVisibility(View.GONE);
+            generate.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onOptionsSaved() {
+        saveAsDefaultButton.setEnabled(false);
+        saveAsDefaultButton.setText(R.string.saved_as_def);
+        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done_black_18dp, 0, 0, 0);
+    }
+
+    @Override
+    public void onOptionsNotSaved() {
+        saveAsDefaultButton.setEnabled(true);
+        saveAsDefaultButton.setText(R.string.save_as_def);
+        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    }
+
+    @Override
+    public void setOptions(Options options) {
+        site.setText(options.getSite());
+        login.setText(options.getLogin());
+        hasLowerCaseLitters.setChecked(options.isHasLowerCaseLitters());
+        hasAppearCaseLitters.setChecked(options.isHasAppearCaseLitters());
+        hasNumbers.setChecked(options.isHasNumbers());
+        hasSymbols.setChecked(options.isHasSymbols());
+        length.setText(String.valueOf(options.getLength()));
+        counter.setText(String.valueOf(options.getCounter()));
     }
 
     @Override

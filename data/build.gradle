@@ -33,6 +33,7 @@ dependencies {
     compile dataDependencies.AACompiler
     compile dataDependencies.appcompat
     compile dataDependencies.spongycastle
+    compile dataDependencies.gson
 
     testCompile testDependencies.junit
 }

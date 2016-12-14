@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.syject.data.entities.Lesspass;
+import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
+import com.syject.data.preferences.OptionsPreferences;
 import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.lesspass.R;
@@ -79,9 +81,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                 .hasSymbols(lessPassView.hasSymbols())
                 .length(len)
                 .counter(LessPassHelper.getInt(counter))
-                    .build();
+                .build();
 
-        Lesspass lesspass = new Lesspass(site,login,masterPassword);
+        Lesspass lesspass = new Lesspass(site, login, masterPassword);
 
         passwordInteractor.getPassword(lesspass, template)
                 .subscribeOn(Schedulers.newThread())
@@ -103,6 +105,45 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
             Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
             hidePasswordAfter(10000);
         }
+    }
+
+    @Override
+    public void checkOptionsSaved() {
+        Options options = getFreshOptions();
+        Options savedOptions = OptionsPreferences.getOptions(context);
+
+        if(options.equals(savedOptions)) {
+            lessPassView.onOptionsSaved();
+        } else {
+            lessPassView.onOptionsNotSaved();
+        }
+    }
+
+    @Override
+    public void saveOptionsAsDefault() {
+        OptionsPreferences.setOptions(context, getFreshOptions());
+        lessPassView.onOptionsSaved();
+    }
+
+    @Override
+    public void initFields() {
+        Options savedOptions = OptionsPreferences.getOptions(context);
+        if (savedOptions != null) {
+            lessPassView.setOptions(savedOptions);
+        }
+    }
+
+    private Options getFreshOptions() {
+        return new Options.Builder()
+                .site(lessPassView.getSite())
+                .login(lessPassView.getLogin())
+                .hasLowerCaseLitters(lessPassView.hasLowerCaseLitters())
+                .hasAppearCaseLitters(lessPassView.hasAppearCaseLitters())
+                .hasNumbers(lessPassView.hasNumbers())
+                .hasSymbols(lessPassView.hasSymbols())
+                .length(LessPassHelper.getInt(lessPassView.getLength()))
+                .counter(LessPassHelper.getInt(lessPassView.getCounter()))
+                    .build();
     }
 
     @Override

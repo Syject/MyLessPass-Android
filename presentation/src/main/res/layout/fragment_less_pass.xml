@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -113,8 +114,7 @@
         android:id="@+id/password_options_liner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -203,12 +203,17 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/save_as_default"
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_as_def"
             android:minHeight="25dp"
             android:minWidth="130dp"
+            android:padding="4dp"
+            android:text="@string/saved_as_def"
+            android:enabled="false"
+            android:drawableLeft="@drawable/ic_done_black_18dp"
+
             style="@style/LessPassButton"/>
 
     </LinearLayout>

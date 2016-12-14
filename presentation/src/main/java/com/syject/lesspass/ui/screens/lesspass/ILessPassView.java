@@ -1,5 +1,7 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
+import com.syject.data.entities.Options;
+
 public interface ILessPassView {
 
     String getSite();
@@ -22,4 +24,8 @@ public interface ILessPassView {
     void onValidationSuccess();
     void onPasswordGenerated(String password);
     void resetPasswordGenerated();
+    void onOptionsNotSaved();
+    void onOptionsSaved();
+
+    void setOptions(Options options);
 }
