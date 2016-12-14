@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.syject.lesspass.R;
 
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class BaseFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

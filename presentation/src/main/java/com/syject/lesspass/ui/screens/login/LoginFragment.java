@@ -57,8 +57,4 @@ public class LoginFragment extends Fragment {
             masterPasswordCheckBox.setText(resStr);
         }
     }
-
-    public static LoginFragment newInstance() {
-        return LoginFragment_.builder().build();
-    }
 }

@@ -1,4 +1,4 @@
-package com.syject.lesspass.ui;
+package com.syject.domain.utils;
 
 import android.text.TextUtils;
 

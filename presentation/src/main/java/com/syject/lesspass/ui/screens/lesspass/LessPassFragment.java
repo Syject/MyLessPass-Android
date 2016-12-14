@@ -152,10 +152,6 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         presenter.saveOptionsAsDefault();
     }
 
-    public static LessPassFragment newInstance() {
-        return LessPassFragment_.builder().build();
-    }
-
     @Override
     public String getSite() {
         return site.getText().toString();

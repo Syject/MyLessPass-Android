@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.syject.data.entities.Options;
 
-public class OptionsPreferences {
+public class PreferencesManager {
 
     private static final String PREF_OPTIONS = "options";
 

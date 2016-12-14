@@ -10,12 +10,12 @@ import android.widget.Toast;
 import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
-import com.syject.data.preferences.OptionsPreferences;
+import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.lesspass.R;
 import com.syject.lesspass.presenters.IPresenter;
-import com.syject.lesspass.ui.LessPassHelper;
+import com.syject.domain.utils.LessPassHelper;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -110,7 +110,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public void checkOptionsSaved() {
         Options options = getFreshOptions();
-        Options savedOptions = OptionsPreferences.getOptions(context);
+        Options savedOptions = PreferencesManager.getOptions(context);
 
         if(options.equals(savedOptions)) {
             lessPassView.onOptionsSaved();
@@ -121,13 +121,13 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Override
     public void saveOptionsAsDefault() {
-        OptionsPreferences.setOptions(context, getFreshOptions());
+        PreferencesManager.setOptions(context, getFreshOptions());
         lessPassView.onOptionsSaved();
     }
 
     @Override
     public void initFields() {
-        Options savedOptions = OptionsPreferences.getOptions(context);
+        Options savedOptions = PreferencesManager.getOptions(context);
         if (savedOptions != null) {
             lessPassView.setOptions(savedOptions);
         }
