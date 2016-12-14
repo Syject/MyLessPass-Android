@@ -129,7 +129,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 (s, l, mp, len, c, lcl, acl, n, sym) -> null
         )
                 .subscribe(n -> {
-                    resetPasswordGenerated();
+                    resetPasswordGenerated(false);
                     presenter.checkOptionsSaved();
                 });
                 /*.flatMap(v -> presenter.generatePassword().subscribeOn(Schedulers.newThread()))
@@ -224,10 +224,13 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
-    public void resetPasswordGenerated() {
+    public void resetPasswordGenerated(boolean withMasterPass) {
         if (generatedPasswordLinearLayout.getVisibility() != View.GONE) {
             generatedPasswordLinearLayout.setVisibility(View.GONE);
             generate.setVisibility(View.VISIBLE);
+            if (withMasterPass) {
+                masterPassword.setText(null);
+            }
         }
     }
 

@@ -169,7 +169,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     public void hidePasswordAfter(int delay) {
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            lessPassView.resetPasswordGenerated();
+            lessPassView.resetPasswordGenerated(true);
         }, delay);
     }
 
