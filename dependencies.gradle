@@ -18,6 +18,8 @@ ext {
     AAVersion = '4.1.0'
     appcompatVersion = 'v7:25.0.0'
     spongycastle = '1.54.0.0'
+    retrofitVersion = '2.1.0'
+    loggingInterceptorVersion = '3.4.2'
     gsonVersion = '2.8.0'
 
     //Testing
@@ -54,13 +56,17 @@ ext {
     ]
 
     dataDependencies = [
-            AA          : "org.androidannotations:androidannotations:${AAVersion}",
-            AACompiler  : "org.androidannotations:androidannotations-api:${AAVersion}",
-            rxJava      : "io.reactivex:rxjava:${rxJavaVersion}",
-            rxAndroid   : "io.reactivex:rxandroid:${rxAndroidVersion}",
-            appcompat   : "com.android.support:appcompat-${appcompatVersion}",
-            spongycastle: "com.madgag.spongycastle:core:${spongycastle}",
-            gson        : "com.google.code.gson:gson:${gsonVersion}"
+            AA                   : "org.androidannotations:androidannotations:${AAVersion}",
+            AACompiler           : "org.androidannotations:androidannotations-api:${AAVersion}",
+            rxJava               : "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid            : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            appcompat            : "com.android.support:appcompat-${appcompatVersion}",
+            spongycastle         : "com.madgag.spongycastle:core:${spongycastle}",
+            retrofit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitRxAdapter    : "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}",
+            retrofitGsonConverter: "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}",
+            gson                 : "com.google.code.gson:gson:${gsonVersion}"
     ]
 
     dataTestDependencies = [

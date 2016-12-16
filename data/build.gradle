@@ -33,6 +33,10 @@ dependencies {
     compile dataDependencies.AACompiler
     compile dataDependencies.appcompat
     compile dataDependencies.spongycastle
+    compile dataDependencies.retrofit
+    compile dataDependencies.retrofitRxAdapter
+    compile dataDependencies.retrofitGsonConverter
+    compile dataDependencies.loggingInterceptor
     compile dataDependencies.gson
 
     testCompile testDependencies.junit

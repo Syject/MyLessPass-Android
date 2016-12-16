@@ -11,7 +11,9 @@ import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
 import com.syject.data.preferences.PreferencesManager;
+import com.syject.domain.interactors.IAuthInteractor;
 import com.syject.domain.interactors.IPasswordInteractor;
+import com.syject.domain.interactors.concret.AuthInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
@@ -39,6 +41,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Bean(PasswordInteractor.class)
     protected IPasswordInteractor passwordInteractor;
+
+    @Bean(AuthInteractor.class)
+    protected IAuthInteractor authInteractor;
 
     public LessPassPresenter(Context context) {
         this.context = context;
@@ -98,6 +103,12 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                     lessPassView.onPasswordGenerated(p);
                     hidePasswordAfter(30000);
                 });
+
+
+        authInteractor.login(login, masterPassword)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(v -> hidePasswordAfter(30000));
     }
 
     @Override
