@@ -105,10 +105,10 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                 });
 
 
-        authInteractor.login(login, masterPassword)
+        /*authInteractor.login(login, masterPassword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(v -> hidePasswordAfter(30000));
+                .subscribe(v -> hidePasswordAfter(30000));*/
     }
 
     @Override
