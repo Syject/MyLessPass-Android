@@ -4,5 +4,6 @@ import rx.Observable;
 
 public interface ILesspassApi {
 
-    Observable<String> requestToken(String email, String password);
+    Observable<String> requestToken(UserRequest userRequest);
+    Observable<String> refrechToken(TokenResponse tokenRequest);
 }

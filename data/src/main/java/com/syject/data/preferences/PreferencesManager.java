@@ -1,29 +1,36 @@
 package com.syject.data.preferences;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.syject.data.entities.Options;
 
+import org.androidannotations.annotations.EBean;
+
+@EBean
 public class PreferencesManager {
 
-    private static final String PREF_OPTIONS = "options";
+    protected final Gson gson;
+    protected final Preferences_ preferences;
 
-    protected static final Gson gson = new Gson();
-
-    public static void setOptions(Context context, Options options) {
-        String json = gson.toJson(options);
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(PREF_OPTIONS, json)
-                .apply();
+    protected PreferencesManager(Context context) {
+        gson = new Gson();
+        preferences = new Preferences_(context);
     }
 
-    public static Options getOptions(Context context) {
-        String json = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PREF_OPTIONS, null);
+    public void setOptions(Options options) {
+        preferences.edit().options().put(gson.toJson(options)).apply();
+    }
 
-         return gson.fromJson(json, Options.class);
+    public Options getOptions() {
+        return gson.fromJson(preferences.options().get(), Options.class);
+    }
+
+    public void setToken(String token) {
+        preferences.edit().token().put(token).apply();
+    }
+
+    public String getToken() {
+        return preferences.token().get();
     }
 }

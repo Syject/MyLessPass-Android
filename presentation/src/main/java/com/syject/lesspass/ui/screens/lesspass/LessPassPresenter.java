@@ -1,7 +1,5 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,15 +13,14 @@ import com.syject.domain.interactors.IAuthInteractor;
 import com.syject.domain.interactors.IPasswordInteractor;
 import com.syject.domain.interactors.concret.AuthInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
+import com.syject.domain.utils.LessPassHelper;
 import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
 import com.syject.lesspass.presenters.IPresenter;
-import com.syject.domain.utils.LessPassHelper;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,6 +41,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Bean(AuthInteractor.class)
     protected IAuthInteractor authInteractor;
+
+    @Bean
+    protected PreferencesManager preferences;
 
     public LessPassPresenter(Context context) {
         this.context = context;
@@ -104,11 +104,15 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                     hidePasswordAfter(30000);
                 });
 
-
         /*authInteractor.login(login, masterPassword)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io ())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(v -> hidePasswordAfter(30000));*/
+                //.onErrorResumeNext(Observable.empty())
+                //.doOnNext(count -> Toast.makeText(context, "eerrrooorr", Toast.LENGTH_SHORT).show())
+                .subscribe(v -> {
+                    Toast.makeText(context, v.token, Toast.LENGTH_SHORT).show();
+                    hidePasswordAfter(30000);
+                });*/
     }
 
     @Override
@@ -124,7 +128,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public void checkOptionsSaved() {
         Options options = getFreshOptions();
-        Options savedOptions = PreferencesManager.getOptions(context);
+        Options savedOptions = preferences.getOptions();
 
         if(options.equals(savedOptions)) {
             lessPassView.onOptionsSaved();
@@ -135,13 +139,13 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Override
     public void saveOptionsAsDefault() {
-        PreferencesManager.setOptions(context, getFreshOptions());
+        preferences.setOptions(getFreshOptions());
         lessPassView.onOptionsSaved();
     }
 
     @Override
     public void initFields() {
-        Options savedOptions = PreferencesManager.getOptions(context);
+        Options savedOptions = preferences.getOptions();
         if (savedOptions != null) {
             lessPassView.setOptions(savedOptions);
         }

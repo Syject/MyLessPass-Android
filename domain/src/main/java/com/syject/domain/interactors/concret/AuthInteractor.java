@@ -1,9 +1,8 @@
 package com.syject.domain.interactors.concret;
 
-import android.util.Log;
-
 import com.syject.data.api.ILesspassApi;
 import com.syject.data.api.LesspassApi;
+import com.syject.data.api.UserRequest;
 import com.syject.domain.interactors.IAuthInteractor;
 
 import org.androidannotations.annotations.AfterInject;
@@ -22,11 +21,8 @@ public class AuthInteractor implements IAuthInteractor {
     }
 
     @Override
-    public Observable<Void> login(String email, String password) {
-        return lesspassApi.requestToken(email, password)
-                .flatMap(t -> {
-                    Log.d("AuthInteractor", t);
-                    return null;
-                });
+    public Observable<String> login(String email, String password) {
+
+        return lesspassApi.requestToken(new UserRequest(email, password));
     }
 }

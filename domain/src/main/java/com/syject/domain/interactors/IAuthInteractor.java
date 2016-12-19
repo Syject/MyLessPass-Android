@@ -1,8 +1,10 @@
 package com.syject.domain.interactors;
 
+import com.syject.data.api.TokenResponse;
+
 import rx.Observable;
 
 public interface IAuthInteractor {
 
-    Observable<Void> login(String email, String password);
+    Observable<String> login(String email, String password);
 }

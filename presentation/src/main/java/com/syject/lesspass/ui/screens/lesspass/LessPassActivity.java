@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 
 import com.syject.lesspass.R;
 import com.syject.lesspass.ui.BaseFragmentActivity;
-import com.syject.lesspass.ui.screens.login.LoginFragment;
 import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
 import org.androidannotations.annotations.EActivity;
