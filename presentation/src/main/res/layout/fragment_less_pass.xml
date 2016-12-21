@@ -69,8 +69,8 @@
             android:id="@+id/generated_password_linear_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/settings"
-            android:layout_toStartOf="@+id/settings"
+            android:layout_toLeftOf="@+id/settings_image_button"
+            android:layout_toStartOf="@+id/settings_image_button"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -103,7 +103,7 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/settings"
+            android:id="@+id/settings_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -117,7 +117,7 @@
         </RelativeLayout>
 
     <TextView
-        android:id="@+id/mandatory_error"
+        android:id="@+id/mandatory_error_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -219,7 +219,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/save_as_default"
+            android:id="@+id/save_as_default_button"
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

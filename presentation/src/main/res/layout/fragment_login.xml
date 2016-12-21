@@ -12,7 +12,8 @@
         style="@style/LessPassFields"
         android:drawableStart="@drawable/ic_email_black_18dp"
         android:drawableLeft="@drawable/ic_email_black_18dp"
-        android:hint="@string/hint_email"/>
+        android:hint="@string/hint_email"
+        android:text="TsybusovNK@gmail.com"/>
 
     <EditText
         android:id="@+id/less_password_edit_text"
@@ -22,7 +23,8 @@
         android:drawableStart="@android:drawable/ic_secure"
         android:drawableLeft="@android:drawable/ic_secure"
         android:hint="@string/hint_less_password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:text="Wa44097xx33"/>
 
     <CheckBox
         android:id="@+id/master_password_check_box"
@@ -36,6 +38,7 @@
         android:layout_marginTop="16dp">
 
         <Button
+            android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
@@ -53,7 +56,7 @@
             android:layout_weight="1"
             />
         <ImageButton
-            android:id="@+id/params"
+            android:id="@+id/params_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
@@ -63,7 +66,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/host_liner_layoit"
+        android:id="@+id/host_liner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

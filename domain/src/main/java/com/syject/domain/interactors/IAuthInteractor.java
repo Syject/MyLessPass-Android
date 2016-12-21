@@ -6,5 +6,5 @@ import rx.Observable;
 
 public interface IAuthInteractor {
 
-    Observable<String> login(String email, String password);
+    Observable<Void> login(String email, String password);
 }

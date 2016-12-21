@@ -9,9 +9,7 @@ import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
 import com.syject.data.preferences.PreferencesManager;
-import com.syject.domain.interactors.IAuthInteractor;
 import com.syject.domain.interactors.IPasswordInteractor;
-import com.syject.domain.interactors.concret.AuthInteractor;
 import com.syject.domain.interactors.concret.PasswordInteractor;
 import com.syject.domain.utils.LessPassHelper;
 import com.syject.domain.utils.SystemUtils;
@@ -27,9 +25,10 @@ import rx.schedulers.Schedulers;
 @EBean
 public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPassView> {
 
-    private static final String TAG = "LessPassPresenter";
-    private static final int DEBOUNCE_TIME = 1000; //1 sec
+    private static final int HIDE_PASSWORD_AFTER_GENERATE = 30000; //30 sec
+    private static final int HIDE_PASSWORD_AFTER_COPY = 10000; //10 sec
     private final Handler handler = new Handler();
+
     private ILessPassView lessPassView;
 
     private Runnable runnable;
@@ -39,19 +38,11 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Bean(PasswordInteractor.class)
     protected IPasswordInteractor passwordInteractor;
 
-    @Bean(AuthInteractor.class)
-    protected IAuthInteractor authInteractor;
-
     @Bean
     protected PreferencesManager preferences;
 
     public LessPassPresenter(Context context) {
         this.context = context;
-    }
-
-    @Override
-    public void login() {
-        Toast.makeText(context, "login", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -101,18 +92,8 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(p -> {
                     lessPassView.onPasswordGenerated(p);
-                    hidePasswordAfter(30000);
+                    hidePasswordAfter(HIDE_PASSWORD_AFTER_GENERATE);
                 });
-
-        /*authInteractor.login(login, masterPassword)
-                .subscribeOn(Schedulers.io ())
-                .observeOn(AndroidSchedulers.mainThread())
-                //.onErrorResumeNext(Observable.empty())
-                //.doOnNext(count -> Toast.makeText(context, "eerrrooorr", Toast.LENGTH_SHORT).show())
-                .subscribe(v -> {
-                    Toast.makeText(context, v.token, Toast.LENGTH_SHORT).show();
-                    hidePasswordAfter(30000);
-                });*/
     }
 
     @Override
@@ -121,7 +102,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         if (password != null && !password.equals("")) {
             SystemUtils.copyToClipboard(context, password, context.getString(R.string.password));
             Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
-            hidePasswordAfter(10000);
+            hidePasswordAfter(HIDE_PASSWORD_AFTER_COPY);
         }
     }
 

@@ -17,7 +17,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.data.entities.Options;
 import com.syject.lesspass.R;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -31,8 +30,6 @@ import rx.Subscription;
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {
 
-    private static final String TAG = "LessPassFragment";
-
     @Bean
     LessPassPresenter presenter;
 
@@ -42,70 +39,49 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @InstanceState
     boolean isGeneratedPasswordExpanded;
 
-    @ViewById(R.id.site_edit_text)
-    protected EditText site;
+    @ViewById EditText siteEditText;
 
-    @ViewById(R.id.login_edit_text)
-    protected EditText login;
+    @ViewById EditText loginEditText;
 
-    @ViewById(R.id.master_password_edit_text)
-    protected EditText masterPassword;
+    @ViewById EditText masterPasswordEditText;
 
-    @ViewById
-    protected TextView password;
+    @ViewById TextView password;
 
-    @ViewById
-    protected CheckBox hasLowerCaseLitters;
+    @ViewById CheckBox hasLowerCaseLitters;
 
-    @ViewById
-    protected CheckBox hasAppearCaseLitters;
+    @ViewById CheckBox hasAppearCaseLitters;
 
-    @ViewById
-    protected CheckBox hasNumbers;
+    @ViewById CheckBox hasNumbers;
 
-    @ViewById
-    protected CheckBox hasSymbols;
+    @ViewById CheckBox hasSymbols;
 
-    @ViewById
-    protected EditText length;
+    @ViewById EditText length;
 
-    @ViewById
-    protected EditText counter;
+    @ViewById EditText counter;
 
-    @ViewById
-    protected Button generate;
+    @ViewById Button generate;
 
-    @ViewById(R.id.settings)
-    protected ImageButton settingsImageButton;
+    @ViewById ImageButton settingsImageButton;
 
-    @ViewById
-    protected ImageButton visibilityImageButton;
+    @ViewById ImageButton visibilityImageButton;
 
-    @ViewById
-    protected LinearLayout passwordOptionsLinerLayout;
+    @ViewById LinearLayout passwordOptionsLinerLayout;
 
-    @ViewById
-    protected LinearLayout generatedPasswordLinearLayout;
+    @ViewById LinearLayout generatedPasswordLinearLayout;
 
-    @ViewById(R.id.mandatory_error)
-    protected TextView mandatoryErrorTextView;
+    @ViewById TextView mandatoryErrorTextView;
 
-    @ViewById(R.id.save_as_default)
-    protected Button saveAsDefaultButton;
+    @ViewById Button saveAsDefaultButton;
 
-    @ViewById
-    protected ProgressBar progressBar;
+    @ViewById ProgressBar progressBar;
 
     private Subscription subscription;
-
-    /*@AfterInject
-    protected void afterInject() {
-    }*/
 
     @AfterViews
     protected void initViews() {
 
         presenter.setView(this);
+
         presenter.initFields();
 
         togglePasswordOptions(isSettingsExpanded);
@@ -120,9 +96,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 .subscribe(this::togglePasswordOptions);
 
         subscription = Observable.combineLatest(
-                RxTextView.textChanges(site),
-                RxTextView.textChanges(login),
-                RxTextView.textChanges(masterPassword),
+                RxTextView.textChanges(siteEditText),
+                RxTextView.textChanges(loginEditText),
+                RxTextView.textChanges(masterPasswordEditText),
                 RxTextView.textChanges(length),
                 RxTextView.textChanges(counter),
                 RxCompoundButton.checkedChanges(hasLowerCaseLitters),
@@ -148,24 +124,21 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         presenter.generatePassword();
     }
 
-    @Click(R.id.save_as_default)
+    @Click(R.id.save_as_default_button)
     void saveAsDefault() {
         presenter.saveOptionsAsDefault();
     }
 
-    @Override
     public String getSite() {
-        return site.getText().toString();
+        return siteEditText.getText().toString();
     }
 
-    @Override
     public String getLogin() {
-        return login.getText().toString();
+        return loginEditText.getText().toString();
     }
 
-    @Override
     public String getMasterPassword() {
-        return masterPassword.getText().toString();
+        return masterPasswordEditText.getText().toString();
     }
 
     @Override
@@ -236,7 +209,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
             generate.setVisibility(View.VISIBLE);
             generate.setEnabled(true);
             if (withMasterPass) {
-                masterPassword.setText(null);
+                masterPasswordEditText.setText(null);
             }
         }
     }
@@ -257,8 +230,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @Override
     public void setOptions(Options options) {
-        site.setText(options.getSite());
-        login.setText(options.getLogin());
+        siteEditText.setText(options.getSite());
+        loginEditText.setText(options.getLogin());
         hasLowerCaseLitters.setChecked(options.isHasLowerCaseLitters());
         hasAppearCaseLitters.setChecked(options.isHasAppearCaseLitters());
         hasNumbers.setChecked(options.isHasNumbers());

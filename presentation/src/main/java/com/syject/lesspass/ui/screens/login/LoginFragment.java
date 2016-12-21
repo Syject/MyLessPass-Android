@@ -2,41 +2,65 @@ package com.syject.lesspass.ui.screens.login;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.syject.lesspass.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_login)
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements ILoginView {
+
+    @Bean
+    LoginPresenter presenter;
 
     @InstanceState
     boolean isExpanded;
+
     int textLength;
+
     String textExpanded;
 
-    @ViewById(R.id.master_password_check_box)
+    @ViewById
+    EditText emailEditText;
+
+    @ViewById
+    EditText lessPasswordEditText;
+
+    @ViewById
+    EditText hostEditText;
+
+    @ViewById
     CheckBox masterPasswordCheckBox;
 
-    @ViewById(R.id.params)
+    @ViewById
     ImageButton paramsImageButton;
 
-    @ViewById(R.id.host_liner_layoit)
+    @ViewById
     LinearLayout hostLinerLayout;
+
+    @ViewById
+    Button signInButton;
 
     @AfterViews
     protected void initViews() {
+
+        presenter.setView(this);
+
         textLength = getString(R.string.use_master_password).length();
         textExpanded = getString(R.string.use_master_password_expand);
         masterPasswordCheckBox.setOnClickListener(view -> {
-                isExpanded = !isExpanded;
-                toggleText(isExpanded);
+            isExpanded = !isExpanded;
+            toggleText(isExpanded);
         });
 
         paramsImageButton.setOnClickListener(view -> {
@@ -46,6 +70,9 @@ public class LoginFragment extends Fragment {
                 hostLinerLayout.setVisibility(View.GONE);
             }
         });
+
+        RxView.clicks(signInButton)
+                .subscribe(v -> presenter.login());
     }
 
     private void toggleText(boolean isExpanded) {
@@ -56,5 +83,39 @@ public class LoginFragment extends Fragment {
             String resStr = string.substring(0, string.length() - textExpanded.length());
             masterPasswordCheckBox.setText(resStr);
         }
+    }
+
+    @Override
+    public String getEmail() {
+        return emailEditText.getText().toString();
+    }
+
+    @Override
+    public String getLesspassPassword() {
+        return lessPasswordEditText.getText().toString();
+    }
+
+    @Override
+    public String getHostUrl() {
+        return hostEditText.getText().toString();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
     }
 }
