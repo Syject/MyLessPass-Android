@@ -1,4 +1,4 @@
-package com.syject.domain.interactors.concret;
+package com.syject.domain.interactors.concrete;
 
 import com.syject.domain.utils.IPasswordUtils;
 import com.syject.domain.utils.PasswordUtils;

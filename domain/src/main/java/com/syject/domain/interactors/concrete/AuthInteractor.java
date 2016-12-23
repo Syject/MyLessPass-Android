@@ -1,4 +1,4 @@
-package com.syject.domain.interactors.concret;
+package com.syject.domain.interactors.concrete;
 
 import com.syject.data.api.ILesspassApi;
 import com.syject.data.api.LesspassApi;

@@ -10,7 +10,7 @@ import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IPasswordInteractor;
-import com.syject.domain.interactors.concret.PasswordInteractor;
+import com.syject.domain.interactors.concrete.PasswordInteractor;
 import com.syject.domain.utils.LessPassHelper;
 import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
