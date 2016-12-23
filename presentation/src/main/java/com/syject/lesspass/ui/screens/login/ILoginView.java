@@ -4,4 +4,5 @@ public interface ILoginView {
     String getEmail();
     String getLesspassPassword();
     String getHostUrl();
+    void onSignInSuccess();
 }

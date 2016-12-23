@@ -1,5 +1,6 @@
 package com.syject.lesspass.ui.screens.login;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.syject.lesspass.R;
+import com.syject.lesspass.ui.screens.lesspass.LessPassActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -100,6 +102,12 @@ public class LoginFragment extends Fragment implements ILoginView {
         return hostEditText.getText().toString();
     }
 
+    @Override
+    public void onSignInSuccess() {
+        Intent openMainActivity= new Intent(getActivity(), LessPassActivity_.class);
+        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(openMainActivity);
+    }
 
     @Override
     public void onResume() {

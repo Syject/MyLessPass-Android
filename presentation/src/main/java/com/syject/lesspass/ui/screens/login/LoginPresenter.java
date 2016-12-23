@@ -42,7 +42,7 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
                 //.onErrorResumeNext(Observable.empty())
                 //.doOnNext(count -> Toast.makeText(context, "eerrrooorr", Toast.LENGTH_SHORT).show())
                 .subscribe(v -> {
-                    Toast.makeText(context, "Log in!", Toast.LENGTH_SHORT).show();
+                    view.onSignInSuccess();
                 });
     }
 
