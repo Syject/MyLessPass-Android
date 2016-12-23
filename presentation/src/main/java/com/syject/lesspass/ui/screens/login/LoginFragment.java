@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Override
     public void onSignInSuccess() {
         Intent openMainActivity= new Intent(getActivity(), LessPassActivity_.class);
-        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(openMainActivity);
     }
 

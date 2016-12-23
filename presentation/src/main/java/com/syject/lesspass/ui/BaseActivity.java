@@ -1,5 +1,6 @@
 package com.syject.lesspass.ui;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.syject.lesspass.R;
+import com.syject.lesspass.ui.screens.lesspass.LessPassActivity_;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -39,5 +41,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             ft.addToBackStack(null);
         }
         ft.commit();
+    }
+
+    protected void showStartActivity() {
+        Intent openMainActivity= new Intent(this, LessPassActivity_.class);
+        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(openMainActivity);
     }
 }

@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_tune_white_18dp"
-        android:title="@string/settings"
-        app:showAsAction="always|withText"/>-->
+    <item
+        android:id="@+id/action_keys"
+        android:icon="@drawable/ic_vpn_key_white_18dp"
+        android:title="@string/keys"
+        app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_login"
+        android:id="@+id/action_sign_out"
+        android:icon="@drawable/ic_power_settings_new_white_18dp"
+        android:title="@string/sign_out"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_sign_in"
         android:icon="@drawable/ic_input_white_18dp"
         android:title="@string/log_in"
         app:showAsAction="always"/>

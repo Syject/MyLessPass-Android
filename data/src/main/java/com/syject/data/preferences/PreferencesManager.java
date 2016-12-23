@@ -33,4 +33,12 @@ public class PreferencesManager {
     public String getToken() {
         return preferences.token().get();
     }
+
+    public void setSignIn(boolean isSignIn) {
+        preferences.edit().isSignedIn().put(isSignIn).apply();
+    }
+
+    public boolean isSignIn() {
+        return preferences.isSignedIn().get();
+    }
 }

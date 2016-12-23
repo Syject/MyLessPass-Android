@@ -31,6 +31,7 @@ public class AuthInteractor implements IAuthInteractor {
         return lesspassApi.requestToken(new UserRequest(email, password))
                 .map(token -> {
                     preferences.setToken(token);
+                    preferences.setSignIn(true);
                     return null;
                 });
     }
