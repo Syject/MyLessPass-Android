@@ -63,8 +63,6 @@
                 android:indeterminate="true" />
         </FrameLayout>
 
-
-
         <LinearLayout
             android:id="@+id/generated_password_linear_layout"
             android:layout_width="fill_parent"

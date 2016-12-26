@@ -37,12 +37,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/sign_in_button"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            style="@style/LessPassButtonPrimary"/>
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in"
+                style="@style/LessPassButtonPrimary"/>
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:theme="@style/WhiteProgress"
+                android:translationZ="10dp"
+                android:indeterminate="true" />
+        </FrameLayout>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +81,16 @@
             style="@style/LessPassButton"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/email_password_error_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/emailPasswordError"
+        android:padding="16dp"
+        style="@style/LessPassError"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/host_liner_layout"

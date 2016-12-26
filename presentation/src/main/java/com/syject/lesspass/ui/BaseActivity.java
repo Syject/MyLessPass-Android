@@ -42,10 +42,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         ft.commit();
     }
-
-    protected void showStartActivity() {
-        Intent openMainActivity= new Intent(this, LessPassActivity_.class);
-        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(openMainActivity);
-    }
 }

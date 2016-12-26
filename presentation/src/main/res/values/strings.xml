@@ -31,12 +31,14 @@
     <string name="default_counter">1</string>
 
     <string name="mandatory">site, login and master password fields are mandatory</string>
+    <string name="emailPasswordError">Your email and/or password is not good. Do you have an account?</string>
 
     <string name="use_master_password">Check me if you want to use your master password here.</string>
     <string name="use_master_password_expand">Your master password should not be saved on a database even encrypted. If you want to use your master password here, you can check the option. It will replace your master password with a LessPass generated password.</string>
 
     <string name="sign_in">Sign in</string>
     <string name="register">Register</string>
+    <string name="empty_string"></string>
 
     <string name="less_database">https://lesspass.com</string>
     <string name="self_hosted">Self Hosted Url</string>

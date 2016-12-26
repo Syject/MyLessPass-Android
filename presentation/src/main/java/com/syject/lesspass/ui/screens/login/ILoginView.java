@@ -5,4 +5,6 @@ public interface ILoginView {
     String getLesspassPassword();
     String getHostUrl();
     void onSignInSuccess();
+    void onSignInFail(Throwable throwable);
+    void onSigningIn();
 }

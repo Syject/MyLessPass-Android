@@ -1,5 +1,7 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
+import rx.Observable;
+
 public interface ILessPassPresenter {
 
     void generatePassword();
@@ -7,4 +9,5 @@ public interface ILessPassPresenter {
     void checkOptionsSaved();
     void saveOptionsAsDefault();
     void initFields();
+    Observable<Void> signOut();
 }

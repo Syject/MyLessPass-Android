@@ -1,7 +1,10 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,20 +18,28 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.data.entities.Options;
+import com.syject.data.preferences.PreferencesManager;
 import com.syject.lesspass.R;
+import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import rx.Observable;
 import rx.Subscription;
 
+@OptionsMenu(R.menu.fragment_less_pass)
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {
+
+    @Bean
+    protected PreferencesManager preferences;
 
     @Bean
     LessPassPresenter presenter;
@@ -39,41 +50,59 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @InstanceState
     boolean isGeneratedPasswordExpanded;
 
-    @ViewById EditText siteEditText;
+    @ViewById
+    EditText siteEditText;
 
-    @ViewById EditText loginEditText;
+    @ViewById
+    EditText loginEditText;
 
-    @ViewById EditText masterPasswordEditText;
+    @ViewById
+    EditText masterPasswordEditText;
 
-    @ViewById TextView password;
+    @ViewById
+    TextView password;
 
-    @ViewById CheckBox hasLowerCaseLitters;
+    @ViewById
+    CheckBox hasLowerCaseLitters;
 
-    @ViewById CheckBox hasAppearCaseLitters;
+    @ViewById
+    CheckBox hasAppearCaseLitters;
 
-    @ViewById CheckBox hasNumbers;
+    @ViewById
+    CheckBox hasNumbers;
 
-    @ViewById CheckBox hasSymbols;
+    @ViewById
+    CheckBox hasSymbols;
 
-    @ViewById EditText length;
+    @ViewById
+    EditText length;
 
-    @ViewById EditText counter;
+    @ViewById
+    EditText counter;
 
-    @ViewById Button generate;
+    @ViewById
+    Button generate;
 
-    @ViewById ImageButton settingsImageButton;
+    @ViewById
+    ImageButton settingsImageButton;
 
-    @ViewById ImageButton visibilityImageButton;
+    @ViewById
+    ImageButton visibilityImageButton;
 
-    @ViewById LinearLayout passwordOptionsLinerLayout;
+    @ViewById
+    LinearLayout passwordOptionsLinerLayout;
 
-    @ViewById LinearLayout generatedPasswordLinearLayout;
+    @ViewById
+    LinearLayout generatedPasswordLinearLayout;
 
-    @ViewById TextView mandatoryErrorTextView;
+    @ViewById
+    TextView mandatoryErrorTextView;
 
-    @ViewById Button saveAsDefaultButton;
+    @ViewById
+    Button saveAsDefaultButton;
 
-    @ViewById ProgressBar progressBar;
+    @ViewById
+    ProgressBar progressBar;
 
     private Subscription subscription;
 
@@ -112,6 +141,35 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                     resetPasswordGenerated(true);
                     presenter.checkOptionsSaved();
                 });
+    }
+
+    @OptionsItem(R.id.action_sign_in)
+    void signIn() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, LoginFragment_.builder().build())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @OptionsItem(R.id.action_sign_out)
+    void signOut() {
+        presenter.signOut()
+                .subscribe(n -> {
+                    Intent openMainActivity = new Intent(getActivity(), getActivity().getClass());
+                    openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(openMainActivity);
+                });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        boolean isSignIn = preferences.isSignIn();
+        menu.findItem(R.id.action_keys).setVisible(isSignIn);
+        menu.findItem(R.id.action_sign_out).setVisible(isSignIn);
+        menu.findItem(R.id.action_sign_in).setVisible(!isSignIn);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Click(R.id.copy_button)

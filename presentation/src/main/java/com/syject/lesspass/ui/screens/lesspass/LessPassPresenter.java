@@ -9,7 +9,9 @@ import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Options;
 import com.syject.data.entities.Template;
 import com.syject.data.preferences.PreferencesManager;
+import com.syject.domain.interactors.IAuthInteractor;
 import com.syject.domain.interactors.IPasswordInteractor;
+import com.syject.domain.interactors.concrete.AuthInteractor;
 import com.syject.domain.interactors.concrete.PasswordInteractor;
 import com.syject.domain.utils.LessPassHelper;
 import com.syject.domain.utils.SystemUtils;
@@ -19,6 +21,7 @@ import com.syject.lesspass.presenters.IPresenter;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -37,6 +40,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Bean(PasswordInteractor.class)
     protected IPasswordInteractor passwordInteractor;
+
+    @Bean(AuthInteractor.class)
+    protected IAuthInteractor authInteractor;
 
     @Bean
     protected PreferencesManager preferences;
@@ -130,6 +136,11 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         if (savedOptions != null) {
             lessPassView.setOptions(savedOptions);
         }
+    }
+
+    @Override
+    public Observable<Void> signOut() {
+        return authInteractor.signOut();
     }
 
     private Options getFreshOptions() {
