@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.syject.data.preferences.PreferencesManager;
+import com.syject.domain.interactors.IAuthInteractor;
+import com.syject.domain.interactors.concrete.AuthInteractor;
 import com.syject.lesspass.R;
 import com.syject.lesspass.ui.BaseActivity;
 import com.syject.lesspass.ui.screens.login.LoginFragment_;
@@ -21,6 +23,9 @@ public class LessPassActivity extends BaseActivity {
     @Bean
     protected PreferencesManager preferences;
 
+    @Bean(AuthInteractor.class)
+    protected IAuthInteractor authInteractor;
+
     @Override
     protected Fragment startFragment() {
         return LessPassFragment_.builder().build();
@@ -33,9 +38,8 @@ public class LessPassActivity extends BaseActivity {
 
     @OptionsItem(R.id.action_sign_out)
     void signOut() {
-        preferences.setToken(null);
-        preferences.setSignIn(false);
-        showStartActivity();
+        authInteractor.signOut()
+                .subscribe(n -> showStartActivity());
     }
 
     @Override

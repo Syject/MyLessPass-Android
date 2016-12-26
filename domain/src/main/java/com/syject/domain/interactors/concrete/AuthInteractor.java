@@ -35,4 +35,14 @@ public class AuthInteractor implements IAuthInteractor {
                     return null;
                 });
     }
+
+    @Override
+    public Observable<Void> signOut() {
+        return Observable.just(null)
+                .map(n -> {
+                    preferences.setToken(null);
+                    preferences.setSignIn(false);
+                    return null;
+                });
+    }
 }
