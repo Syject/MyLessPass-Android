@@ -11,4 +11,7 @@ public interface RestApi {
 
     @POST("/api/tokens/refresh/")
     Observable<TokenResponse> refreshToken(@Body TokenResponse userRequest);
+
+    @POST("/api/auth/register/")
+    Observable<UserResponse> refreshToken(@Body UserRequest userRequest);
 }

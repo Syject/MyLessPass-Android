@@ -37,6 +37,12 @@ public class AuthInteractor implements IAuthInteractor {
     }
 
     @Override
+    public Observable<Void> register(String email, String password) {
+        return lesspassApi.registerUser(new UserRequest(email, password))
+                .flatMap(userResponse -> login(email, password));
+    }
+
+    @Override
     public Observable<Void> signOut() {
         return Observable.just(null)
                 .map(n -> {

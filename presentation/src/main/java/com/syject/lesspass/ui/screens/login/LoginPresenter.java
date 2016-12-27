@@ -2,7 +2,6 @@ package com.syject.lesspass.ui.screens.login;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IAuthInteractor;
@@ -35,7 +34,7 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Override
     public void login() {
 
-        if (view.getEmail().equals("") || view.getLesspassPassword().equals("")) {
+        if (!isFormValid()) {
             view.onSignInFail(new Throwable("Email or Password is empty!"));
             return;
         }
@@ -50,7 +49,17 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
 
     @Override
     public void register() {
+        if (!isFormValid()) {
+            view.onRegisterFail(new Throwable("Email or Password is empty!"));
+            return;
+        }
 
+        view.onRegistering();
+        authInteractor.register(view.getEmail(), view.getLesspassPassword())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(v ->
+                        view.onRegisterSuccess(), view::onRegisterFail);
     }
 
     @Override
@@ -76,5 +85,9 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Override
     public void destroy() {
         this.view = null;
+    }
+
+    private boolean isFormValid() {
+        return !(view.getEmail().equals("") || view.getLesspassPassword().equals(""));
     }
 }

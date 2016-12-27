@@ -41,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-
             <Button
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
@@ -60,13 +59,29 @@
                 android:indeterminate="true" />
         </FrameLayout>
 
-        <Button
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            style="@style/LessPassButton"/>
+            android:layout_marginLeft="8dp">
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                style="@style/LessPassButton"/>
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/progressBarRegister"
+                android:layout_gravity="center"
+                android:translationZ="10dp"
+                android:indeterminate="true" />
+        </FrameLayout>
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
