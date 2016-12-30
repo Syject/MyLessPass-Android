@@ -12,4 +12,8 @@ public interface ILoginView {
     void onRegisterSuccess();
     void onRegisterFail(Throwable throwable);
     void onRegistering();
+
+    void onPasswordEmpty();
+    void onEmailEmpty();
+    void onEmailInvalid();
 }

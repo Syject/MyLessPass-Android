@@ -155,6 +155,21 @@ public class LoginFragment extends Fragment implements ILoginView {
     }
 
     @Override
+    public void onPasswordEmpty() {
+        lessPasswordEditText.setError(getString(R.string.password_is_required));
+    }
+
+    @Override
+    public void onEmailEmpty() {
+        emailEditText.setError(getString(R.string.email_is_required));
+    }
+
+    @Override
+    public void onEmailInvalid() {
+        emailEditText.setError(getString(R.string.email_is_invalid));
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.resume();

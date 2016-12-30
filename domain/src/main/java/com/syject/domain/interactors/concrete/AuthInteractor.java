@@ -39,6 +39,12 @@ public class AuthInteractor implements IAuthInteractor {
     @Override
     public Observable<Void> register(String email, String password) {
         return lesspassApi.registerUser(new UserRequest(email, password))
+                /*TODO : add check response
+                .flatMap(response -> {
+                    checkResponse(response.isAuthenticated,
+                            "Bad username or password provided", AuthenticateException.ERROR_CODE_BAD_CREDENTIALS);
+                    return response;
+                })*/
                 .flatMap(userResponse -> login(email, password));
     }
 

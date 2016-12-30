@@ -10,8 +10,8 @@ public interface RestApi {
     Observable<TokenResponse> requestToken(@Body UserRequest userRequest);
 
     @POST("/api/tokens/refresh/")
-    Observable<TokenResponse> refreshToken(@Body TokenResponse userRequest);
+    Observable<TokenResponse> register(@Body TokenResponse userRequest);
 
     @POST("/api/auth/register/")
-    Observable<UserResponse> refreshToken(@Body UserRequest userRequest);
+    Observable<UserResponse> register(@Body UserRequest userRequest);
 }

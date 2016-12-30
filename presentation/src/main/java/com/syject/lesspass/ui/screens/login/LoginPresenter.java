@@ -34,32 +34,57 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Override
     public void login() {
 
-        if (!isFormValid()) {
-            view.onSignInFail(new Throwable("Email or Password is empty!"));
-            return;
+        boolean isFormValid = true;
+        if (view.getEmail().equals("")) {
+            view.onEmailEmpty();
+            isFormValid = false;
         }
+
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(view.getEmail()).matches()) {
+            view.onEmailInvalid();
+            isFormValid = false;
+        }
+
+        if (view.getLesspassPassword().equals("")) {
+            view.onPasswordEmpty();
+            isFormValid = false;
+        }
+
+        if (!isFormValid) return;
 
         view.onSigningIn();
         authInteractor.login(view.getEmail(), view.getLesspassPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(v ->
-                    view.onSignInSuccess(), view::onSignInFail);
+                .subscribe(v -> view.onSignInSuccess(), view::onSignInFail);
     }
 
     @Override
     public void register() {
-        if (!isFormValid()) {
-            view.onRegisterFail(new Throwable("Email or Password is empty!"));
-            return;
+
+        boolean isFormValid = true;
+        if (view.getEmail().equals("")) {
+            view.onEmailEmpty();
+            isFormValid = false;
         }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(view.getEmail()).matches()) {
+            view.onEmailInvalid();
+            isFormValid = false;
+        }
+
+        if (view.getLesspassPassword().equals("")) {
+            view.onPasswordEmpty();
+            isFormValid = false;
+        }
+
+        if (!isFormValid) return;
 
         view.onRegistering();
         authInteractor.register(view.getEmail(), view.getLesspassPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(v ->
-                        view.onRegisterSuccess(), view::onRegisterFail);
+                .subscribe(v -> view.onRegisterSuccess(), view::onRegisterFail);
     }
 
     @Override
@@ -85,9 +110,5 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Override
     public void destroy() {
         this.view = null;
-    }
-
-    private boolean isFormValid() {
-        return !(view.getEmail().equals("") || view.getLesspassPassword().equals(""));
     }
 }

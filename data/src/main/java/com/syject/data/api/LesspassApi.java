@@ -18,12 +18,12 @@ public class LesspassApi extends ApiBase implements ILesspassApi {
 
     @Override
     public Observable<String> refreshToken(TokenResponse tokenRequest) {
-        return restApi.refreshToken(tokenRequest)
+        return restApi.register(tokenRequest)
                 .map(tokenResponse -> tokenResponse.token);
     }
 
     @Override
     public Observable<UserResponse> registerUser(UserRequest userRequest) {
-        return restApi.refreshToken(userRequest);
+        return restApi.register(userRequest);
     }
 }

@@ -32,6 +32,9 @@
 
     <string name="mandatory">site, login and master password fields are mandatory</string>
     <string name="emailPasswordError">Your email and/or password is not good. Do you have an account?</string>
+    <string name="email_is_required">An email is required</string>
+    <string name="email_is_invalid">Please enter a valid email</string>
+    <string name="password_is_required">A password is required</string>
 
     <string name="use_master_password">Check me if you want to use your master password here.</string>
     <string name="use_master_password_expand">Your master password should not be saved on a database even encrypted. If you want to use your master password here, you can check the option. It will replace your master password with a LessPass generated password.</string>
