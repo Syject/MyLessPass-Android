@@ -1,10 +1,13 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
@@ -96,6 +100,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     LinearLayout generatedPasswordLinearLayout;
 
     @ViewById
+    LinearLayout coordinatorLayout;
+
+    @ViewById
     TextView mandatoryErrorTextView;
 
     @ViewById
@@ -105,6 +112,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     ProgressBar progressBar;
 
     private Subscription subscription;
+
+    private Menu menu;
 
     @AfterViews
     protected void initViews() {
@@ -161,12 +170,23 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 });
     }
 
+    @OptionsItem(R.id.action_save)
+    void save() {
+        presenter.save()
+                .onErrorReturn(throwable -> {
+                    Log.w("", throwable);
+                    return null;
+                })
+                .subscribe(v -> Snackbar.make(coordinatorLayout, "Options saved.", Snackbar.LENGTH_SHORT).show());
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+        this.menu = menu;
         boolean isSignIn = preferences.isSignIn();
         menu.findItem(R.id.action_keys).setVisible(isSignIn);
         menu.findItem(R.id.action_sign_out).setVisible(isSignIn);
+        menu.findItem(R.id.action_save).setVisible(false);
         menu.findItem(R.id.action_sign_in).setVisible(!isSignIn);
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -258,6 +278,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         progressBar.setVisibility(View.INVISIBLE);
         generatedPasswordLinearLayout.setVisibility(View.VISIBLE);
         setPassword(password);
+        if (preferences.isSignIn()) {
+            menu.findItem(R.id.action_save).setVisible(true);
+        }
     }
 
     @Override
@@ -269,21 +292,15 @@ public class LessPassFragment extends Fragment implements ILessPassView {
             if (withMasterPass) {
                 masterPasswordEditText.setText(null);
             }
+            menu.findItem(R.id.action_save).setVisible(false);
         }
     }
 
     @Override
-    public void onOptionsSaved() {
-        saveAsDefaultButton.setEnabled(false);
-        saveAsDefaultButton.setText(R.string.saved_as_def);
-        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done_black_18dp, 0, 0, 0);
-    }
-
-    @Override
-    public void onOptionsNotSaved() {
-        saveAsDefaultButton.setEnabled(true);
-        saveAsDefaultButton.setText(R.string.save_as_def);
-        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    public void onOptionsSave(boolean isSaved) {
+        saveAsDefaultButton.setEnabled(!isSaved);
+        saveAsDefaultButton.setText(isSaved ? R.string.saved_as_def : R.string.save_as_def);
+        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(isSaved ? 0 : R.drawable.ic_done_black_18dp, 0, 0, 0);
     }
 
     @Override

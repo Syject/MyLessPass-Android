@@ -118,16 +118,16 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         Options savedOptions = preferences.getOptions();
 
         if(options.equals(savedOptions)) {
-            lessPassView.onOptionsSaved();
+            lessPassView.onOptionsSave(true);
         } else {
-            lessPassView.onOptionsNotSaved();
+            lessPassView.onOptionsSave(false);
         }
     }
 
     @Override
     public void saveOptionsAsDefault() {
         preferences.setOptions(getFreshOptions());
-        lessPassView.onOptionsSaved();
+        lessPassView.onOptionsSave(true);
     }
 
     @Override
@@ -141,6 +141,13 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public Observable<Void> signOut() {
         return authInteractor.signOut();
+    }
+
+    @Override
+    public Observable<Void> save() {
+        return authInteractor.saveOptions(getFreshOptions())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private Options getFreshOptions() {

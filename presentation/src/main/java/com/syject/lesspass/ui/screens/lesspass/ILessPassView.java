@@ -25,8 +25,7 @@ public interface ILessPassView {
     void onPasswordGenerating();
     void onPasswordGenerated(String password);
     void resetPasswordGenerated(boolean withMasterPass);
-    void onOptionsNotSaved();
-    void onOptionsSaved();
+    void onOptionsSave(boolean isSaved);
 
     void setOptions(Options options);
 }

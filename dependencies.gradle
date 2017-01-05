@@ -17,6 +17,7 @@ ext {
     rxBindingVersion = '0.4.0'
     AAVersion = '4.1.0'
     appcompatVersion = 'v7:25.0.0'
+    designVersion = '25.0.1'
     spongycastle = '1.54.0.0'
     retrofitVersion = '2.1.0'
     loggingInterceptorVersion = '3.4.2'
@@ -36,6 +37,7 @@ ext {
             AA        : "org.androidannotations:androidannotations:${AAVersion}",
             AACompiler: "org.androidannotations:androidannotations-api:${AAVersion}",
             appcompat : "com.android.support:appcompat-${appcompatVersion}",
+            design : "com.android.support:design:${designVersion}",
     ]
 
     presentationTestDependencies = [

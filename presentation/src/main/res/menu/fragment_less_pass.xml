@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save_white_18dp"
+        android:title="@string/keys"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_keys"
         android:icon="@drawable/ic_vpn_key_white_18dp"
         android:title="@string/keys"

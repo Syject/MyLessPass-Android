@@ -10,6 +10,7 @@ public class Options {
     private boolean hasSymbols;
     private int length;
     private int counter;
+    private int version;
 
     public static class Builder {
         private String site;
@@ -20,6 +21,7 @@ public class Options {
         private boolean hasSymbols = true;
         private int length = 16;
         private int counter = 1;
+        private int version = 2;
 
         public Builder site(String site) {
             this.site = site;
@@ -61,6 +63,11 @@ public class Options {
             return this;
         }
 
+        public Builder version(int vers) {
+            version = vers;
+            return this;
+        }
+
         public Options build() {
             return new Options(this);
         }
@@ -75,37 +82,7 @@ public class Options {
         counter = builder.counter;
         site = builder.site;
         login = builder.login;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Options options = (Options) o;
-
-        if (hasLowerCaseLitters != options.hasLowerCaseLitters) return false;
-        if (hasAppearCaseLitters != options.hasAppearCaseLitters) return false;
-        if (hasNumbers != options.hasNumbers) return false;
-        if (hasSymbols != options.hasSymbols) return false;
-        if (length != options.length) return false;
-        if (counter != options.counter) return false;
-        if (site != null ? !site.equals(options.site) : options.site != null) return false;
-        return login != null ? login.equals(options.login) : options.login == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = site != null ? site.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
-        result = 31 * result + (hasAppearCaseLitters ? 1 : 0);
-        result = 31 * result + (hasNumbers ? 1 : 0);
-        result = 31 * result + (hasSymbols ? 1 : 0);
-        result = 31 * result + length;
-        result = 31 * result + counter;
-        return result;
+        version = builder.version;
     }
 
     public int getCounter() {
@@ -138,5 +115,9 @@ public class Options {
 
     public String getLogin() {
         return login;
+    }
+
+    public int getVersion() {
+        return version;
     }
 }

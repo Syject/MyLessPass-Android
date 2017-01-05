@@ -1,5 +1,7 @@
 package com.syject.data.api;
 
+import java.util.List;
+
 import rx.Observable;
 
 public interface ILesspassApi {
@@ -7,4 +9,6 @@ public interface ILesspassApi {
     Observable<String> requestToken(UserRequest userRequest);
     Observable<String> refreshToken(TokenResponse tokenRequest);
     Observable<UserResponse> registerUser(UserRequest tokenRequest);
+    Observable<OptionsRequest> saveOptions(OptionsRequest optionsRequest);
+    Observable<List<OptionsRequest>> getAllOptions();
 }
