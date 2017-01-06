@@ -1,13 +1,13 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,13 +16,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.syject.data.entities.Options;
 import com.syject.data.preferences.PreferencesManager;
+import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
 import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
@@ -47,6 +47,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @Bean
     LessPassPresenter presenter;
+
+    @Bean
+    protected SystemUtils systemUtils;
 
     @InstanceState
     boolean isSettingsExpanded;
@@ -100,7 +103,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     LinearLayout generatedPasswordLinearLayout;
 
     @ViewById
-    LinearLayout coordinatorLayout;
+    CoordinatorLayout coordinatorLayout;
 
     @ViewById
     TextView mandatoryErrorTextView;
@@ -262,6 +265,9 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @Override
     public void onValidationSuccess() {
         mandatoryErrorTextView.setVisibility(View.GONE);
+        masterPasswordEditText.setFocusableInTouchMode(true);
+        masterPasswordEditText.requestFocus();
+        systemUtils.closeKeyboard(masterPasswordEditText);
     }
 
     @Override
@@ -297,10 +303,15 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
+    public void onCopiedToClipboard() {
+        Snackbar.make(coordinatorLayout, R.string.copied, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onOptionsSave(boolean isSaved) {
         saveAsDefaultButton.setEnabled(!isSaved);
         saveAsDefaultButton.setText(isSaved ? R.string.saved_as_def : R.string.save_as_def);
-        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(isSaved ? 0 : R.drawable.ic_done_black_18dp, 0, 0, 0);
+        saveAsDefaultButton.setCompoundDrawablesWithIntrinsicBounds(isSaved ? R.drawable.ic_done_black_18dp : 0, 0, 0, 0);
     }
 
     @Override

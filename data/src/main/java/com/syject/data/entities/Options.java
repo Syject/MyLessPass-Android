@@ -85,6 +85,39 @@ public class Options {
         version = builder.version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Options options = (Options) o;
+
+        if (hasLowerCaseLitters != options.hasLowerCaseLitters) return false;
+        if (hasAppearCaseLitters != options.hasAppearCaseLitters) return false;
+        if (hasNumbers != options.hasNumbers) return false;
+        if (hasSymbols != options.hasSymbols) return false;
+        if (length != options.length) return false;
+        if (counter != options.counter) return false;
+        if (version != options.version) return false;
+        if (site != null ? !site.equals(options.site) : options.site != null) return false;
+        return login != null ? login.equals(options.login) : options.login == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = site != null ? site.hashCode() : 0;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
+        result = 31 * result + (hasAppearCaseLitters ? 1 : 0);
+        result = 31 * result + (hasNumbers ? 1 : 0);
+        result = 31 * result + (hasSymbols ? 1 : 0);
+        result = 31 * result + length;
+        result = 31 * result + counter;
+        result = 31 * result + version;
+        return result;
+    }
+
     public int getCounter() {
         return counter;
     }

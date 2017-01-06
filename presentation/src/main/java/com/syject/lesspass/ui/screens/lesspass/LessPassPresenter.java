@@ -3,7 +3,6 @@ package com.syject.lesspass.ui.screens.lesspass;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Options;
@@ -46,6 +45,9 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     @Bean
     protected PreferencesManager preferences;
+
+    @Bean
+    protected SystemUtils systemUtils;
 
     public LessPassPresenter(Context context) {
         this.context = context;
@@ -106,8 +108,8 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     public void copyToClipboard() {
         String password = lessPassView.getPassword();
         if (password != null && !password.equals("")) {
-            SystemUtils.copyToClipboard(context, password, context.getString(R.string.password));
-            Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show();
+            systemUtils.copyToClipboard(context, password, context.getString(R.string.password));
+            lessPassView.onCopiedToClipboard();
             hidePasswordAfter(HIDE_PASSWORD_AFTER_COPY);
         }
     }
@@ -182,6 +184,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     @Override
     public void destroy() {
         this.lessPassView = null;
+        handler.removeCallbacks(runnable);
     }
 
     public void hidePasswordAfter(int delay) {
