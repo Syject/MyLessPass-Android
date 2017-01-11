@@ -45,6 +45,7 @@ dependencies {
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.rxBinding
     compile presentationDependencies.design
+    compile presentationDependencies.recyclerview
 
     androidTestCompile presentationTestDependencies.espresso
     androidTestCompile presentationTestDependencies.junit

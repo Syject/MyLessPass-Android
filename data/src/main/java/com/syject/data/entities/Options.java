@@ -2,6 +2,7 @@ package com.syject.data.entities;
 
 public class Options {
 
+    private String uuid;
     private String site;
     private String login;
     private boolean hasLowerCaseLitters;
@@ -13,6 +14,7 @@ public class Options {
     private int version;
 
     public static class Builder {
+        private String uuid;
         private String site;
         private String login;
         private boolean hasLowerCaseLitters = true;
@@ -22,6 +24,11 @@ public class Options {
         private int length = 16;
         private int counter = 1;
         private int version = 2;
+
+        public Builder uuid(String id) {
+            this.uuid = id;
+            return this;
+        }
 
         public Builder site(String site) {
             this.site = site;
@@ -80,6 +87,7 @@ public class Options {
         hasSymbols = builder.hasSymbols;
         length = builder.length;
         counter = builder.counter;
+        uuid = builder.uuid;
         site = builder.site;
         login = builder.login;
         version = builder.version;
@@ -99,6 +107,7 @@ public class Options {
         if (length != options.length) return false;
         if (counter != options.counter) return false;
         if (version != options.version) return false;
+        if (uuid != null ? !uuid.equals(options.uuid) : options.uuid != null) return false;
         if (site != null ? !site.equals(options.site) : options.site != null) return false;
         return login != null ? login.equals(options.login) : options.login == null;
 
@@ -106,7 +115,8 @@ public class Options {
 
     @Override
     public int hashCode() {
-        int result = site != null ? site.hashCode() : 0;
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (site != null ? site.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
         result = 31 * result + (hasAppearCaseLitters ? 1 : 0);
@@ -140,6 +150,10 @@ public class Options {
 
     public boolean isHasLowerCaseLitters() {
         return hasLowerCaseLitters;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     public String getSite() {

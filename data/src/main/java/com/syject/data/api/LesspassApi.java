@@ -1,5 +1,10 @@
 package com.syject.data.api;
 
+import com.syject.data.api.entities.TokenResponse;
+import com.syject.data.api.entities.UserRequest;
+import com.syject.data.api.entities.UserResponse;
+import com.syject.data.entities.Options;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -49,13 +54,19 @@ public class LesspassApi extends ApiBase implements ILesspassApi {
     }
 
     @Override
-    public Observable<List<OptionsRequest>> getAllOptions() {
+    public Observable<List<Options>> getAllOptions() {
         return restApi.getAllOptions()
                 .map(optionsResponse -> optionsResponse.results);
     }
 
     @Override
-    public Observable<OptionsRequest> saveOptions(OptionsRequest optionsRequest) {
+    public Observable<Void> deleteOption(String uuid) {
+        return restApi.deleteOption(uuid)
+                .map(r -> null);
+    }
+
+    @Override
+    public Observable<Options> saveOptions(Options optionsRequest) {
         return restApi.saveOptions(optionsRequest);
     }
 }

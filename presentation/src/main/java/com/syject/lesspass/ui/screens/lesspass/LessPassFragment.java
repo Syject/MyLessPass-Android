@@ -24,6 +24,7 @@ import com.syject.data.entities.Options;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
+import com.syject.lesspass.ui.screens.keys.KeysFragment_;
 import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -114,7 +115,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @ViewById
     ProgressBar progressBar;
 
-    private Subscription subscription;
+    Subscription subscription;
 
     private Menu menu;
 
@@ -181,6 +182,14 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                     return null;
                 })
                 .subscribe(v -> Snackbar.make(coordinatorLayout, "Options saved.", Snackbar.LENGTH_SHORT).show());
+    }
+
+    @OptionsItem(R.id.action_keys)
+    void keys() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, KeysFragment_.builder().build())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

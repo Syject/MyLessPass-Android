@@ -2,9 +2,7 @@ package com.syject.domain.interactors.concrete;
 
 import com.syject.data.api.ILesspassApi;
 import com.syject.data.api.LesspassApi;
-import com.syject.data.api.OptionsRequest;
-import com.syject.data.api.UserRequest;
-import com.syject.data.entities.Options;
+import com.syject.data.api.entities.UserRequest;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IAuthInteractor;
 
@@ -59,21 +57,5 @@ public class AuthInteractor implements IAuthInteractor {
                     preferences.setSignIn(false);
                     return null;
                 });
-    }
-
-    @Override
-    public Observable<Void> saveOptions(Options options) {
-
-        return lesspassApi.getAllOptions()
-                .filter(optionsRequests -> {
-                    for (OptionsRequest option: optionsRequests) {
-                        if (options.getLogin().equals(option.login)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                })
-                .flatMap(o -> lesspassApi.saveOptions(new OptionsRequest(options)))
-                .map(optionsRequest -> null);
     }
 }

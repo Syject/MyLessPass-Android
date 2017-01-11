@@ -12,6 +12,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_less_password">LessPass password</string>
     <string name="hint_less_database">LessPass Database (https://…)</string>
+    <string name="hint_search">Search</string>
     <string name="password">password</string>
     <string name="generate">Generate</string>
 

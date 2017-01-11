@@ -1,4 +1,4 @@
-package com.syject.data.api;
+package com.syject.data.api.entities;
 
 import com.google.gson.annotations.SerializedName;
 

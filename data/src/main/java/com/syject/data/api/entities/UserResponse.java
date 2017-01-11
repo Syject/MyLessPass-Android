@@ -1,4 +1,4 @@
-package com.syject.data.api;
+package com.syject.data.api.entities;
 
 public class UserResponse {
     final String email;
