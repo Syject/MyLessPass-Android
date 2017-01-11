@@ -1,11 +1,11 @@
 package com.syject.domain.interactors.concrete;
 
-import com.syject.domain.utils.IPasswordUtils;
-import com.syject.domain.utils.PasswordUtils;
 import com.syject.data.entities.Lesspass;
 import com.syject.data.entities.Password;
 import com.syject.data.entities.Template;
 import com.syject.domain.interactors.IPasswordInteractor;
+import com.syject.domain.utils.IPasswordUtils;
+import com.syject.domain.utils.PasswordUtils;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -49,11 +49,4 @@ public class PasswordInteractor implements IPasswordInteractor {
         public List<String> rules;
         public Password password;
     }
-
-    /*String entropy = passwordUtils.calcEntropy(lesspass, template);
-        List<String> rules = passwordUtils.getConfiguredRules(template);
-        String setOfCharacters = passwordUtils.getSetOfCharacters(rules);
-        Password password = passwordUtils.consumeEntropy("", new BigInteger(entropy, 16), setOfCharacters, template.getLength() - rules.size());
-        OneCharPerRule charactersToAdd  = passwordUtils.getOneCharPerRule(password.getEntropy(), rules);
-        return passwordUtils.insertStringPseudoRandomly(password.getValue(), charactersToAdd.getEntropy(), charactersToAdd.getValue());*/
 }

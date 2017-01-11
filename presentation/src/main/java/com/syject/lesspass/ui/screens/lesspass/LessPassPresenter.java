@@ -151,7 +151,7 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
     }
 
     @Override
-    public Observable<Void> save() {
+    public Observable<Boolean> save() {
         return keysInteractor.saveOptions(getFreshOptions())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

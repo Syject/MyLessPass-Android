@@ -6,7 +6,7 @@ public class Options {
     private String site;
     private String login;
     private boolean hasLowerCaseLitters;
-    private boolean hasAppearCaseLitters;
+    private boolean hasUpperCaseLitters;
     private boolean hasNumbers;
     private boolean hasSymbols;
     private int length;
@@ -17,8 +17,8 @@ public class Options {
         private String uuid;
         private String site;
         private String login;
-        private boolean hasLowerCaseLitters = true;
-        private boolean hasAppearCaseLitters = true;
+        private boolean hasLowerCaseLetters = true;
+        private boolean hasUpperCaseLetters = true;
         private boolean hasNumbers = true;
         private boolean hasSymbols = true;
         private int length = 16;
@@ -41,12 +41,12 @@ public class Options {
         }
 
         public Builder hasLowerCaseLitters(boolean b) {
-            hasLowerCaseLitters = b;
+            hasLowerCaseLetters = b;
             return this;
         }
 
         public Builder hasAppearCaseLitters(boolean b) {
-            hasAppearCaseLitters = b;
+            hasUpperCaseLetters = b;
             return this;
         }
 
@@ -81,8 +81,8 @@ public class Options {
     }
 
     private Options(Builder builder) {
-        hasLowerCaseLitters = builder.hasLowerCaseLitters;
-        hasAppearCaseLitters = builder.hasAppearCaseLitters;
+        hasLowerCaseLitters = builder.hasLowerCaseLetters;
+        hasUpperCaseLitters = builder.hasUpperCaseLetters;
         hasNumbers = builder.hasNumbers;
         hasSymbols = builder.hasSymbols;
         length = builder.length;
@@ -101,7 +101,7 @@ public class Options {
         Options options = (Options) o;
 
         if (hasLowerCaseLitters != options.hasLowerCaseLitters) return false;
-        if (hasAppearCaseLitters != options.hasAppearCaseLitters) return false;
+        if (hasUpperCaseLitters != options.hasUpperCaseLitters) return false;
         if (hasNumbers != options.hasNumbers) return false;
         if (hasSymbols != options.hasSymbols) return false;
         if (length != options.length) return false;
@@ -119,7 +119,7 @@ public class Options {
         result = 31 * result + (site != null ? site.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
-        result = 31 * result + (hasAppearCaseLitters ? 1 : 0);
+        result = 31 * result + (hasUpperCaseLitters ? 1 : 0);
         result = 31 * result + (hasNumbers ? 1 : 0);
         result = 31 * result + (hasSymbols ? 1 : 0);
         result = 31 * result + length;
@@ -144,8 +144,8 @@ public class Options {
         return hasNumbers;
     }
 
-    public boolean isHasAppearCaseLitters() {
-        return hasAppearCaseLitters;
+    public boolean isHasUpperCaseLitters() {
+        return hasUpperCaseLitters;
     }
 
     public boolean isHasLowerCaseLitters() {

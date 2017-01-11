@@ -6,8 +6,8 @@ public class Template {
     public static final String SHA256 = "SHA256";
     public static final int len = 16;
 
-    private boolean hasLowerCaseLitters;
-    private boolean hasAppearCaseLitters;
+    private boolean hasLowerCaseLetters;
+    private boolean hasUpperCaseLetters;
     private boolean hasNumbers;
     private boolean hasSymbols;
     private int length;
@@ -16,8 +16,8 @@ public class Template {
     private String digest;
 
     public static class Builder {
-        private boolean hasLowerCaseLitters = true;
-        private boolean hasAppearCaseLitters = true;
+        private boolean hasLowerCaseLetters = true;
+        private boolean hasUpperCaseLetters = true;
         private boolean hasNumbers = true;
         private boolean hasSymbols = true;
         private int length = 16;
@@ -26,12 +26,12 @@ public class Template {
         private String digest = SHA256;
 
         public Builder hasLowerCaseLitters(boolean b) {
-            hasLowerCaseLitters = b;
+            hasLowerCaseLetters = b;
             return this;
         }
 
         public Builder hasAppearCaseLitters(boolean b) {
-            hasAppearCaseLitters = b;
+            hasUpperCaseLetters = b;
             return this;
         }
 
@@ -71,8 +71,8 @@ public class Template {
     }
 
     private Template(Builder builder) {
-        hasLowerCaseLitters = builder.hasLowerCaseLitters;
-        hasAppearCaseLitters = builder.hasAppearCaseLitters;
+        hasLowerCaseLetters = builder.hasLowerCaseLetters;
+        hasUpperCaseLetters = builder.hasUpperCaseLetters;
         hasNumbers = builder.hasNumbers;
         hasSymbols = builder.hasSymbols;
         length = builder.length;
@@ -89,20 +89,20 @@ public class Template {
         return length;
     }
 
-    public boolean isHasSymbols() {
+    public boolean hasSymbols() {
         return hasSymbols;
     }
 
-    public boolean isHasNumbers() {
+    public boolean hasNumbers() {
         return hasNumbers;
     }
 
-    public boolean isHasAppearCaseLitters() {
-        return hasAppearCaseLitters;
+    public boolean hasUpperCaseLetters() {
+        return hasUpperCaseLetters;
     }
 
-    public boolean isHasLowerCaseLitters() {
-        return hasLowerCaseLitters;
+    public boolean hasLowerCaseLetters() {
+        return hasLowerCaseLetters;
     }
 
     public String getDigest() {

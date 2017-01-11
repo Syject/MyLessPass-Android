@@ -50,4 +50,7 @@
 
     <string name="save_as_def">save as default</string>
     <string name="saved_as_def">saved as default</string>
+
+    <string name="options_saved">Options saved.</string>
+    <string name="options_exist">This Options already exist!</string>
 </resources>

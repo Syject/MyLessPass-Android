@@ -5,7 +5,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -177,11 +176,12 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @OptionsItem(R.id.action_save)
     void save() {
         presenter.save()
-                .onErrorReturn(throwable -> {
-                    Log.w("", throwable);
-                    return null;
-                })
-                .subscribe(v -> Snackbar.make(coordinatorLayout, "Options saved.", Snackbar.LENGTH_SHORT).show());
+                .subscribe(b -> afterSaveOptions(b ? R.string.options_saved : R.string.options_exist));
+    }
+
+    private void afterSaveOptions(Integer res) {
+        Snackbar.make(coordinatorLayout, res, Snackbar.LENGTH_SHORT).show();
+        menu.findItem(R.id.action_save).setVisible(false);
     }
 
     @OptionsItem(R.id.action_keys)
@@ -328,7 +328,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         siteEditText.setText(options.getSite());
         loginEditText.setText(options.getLogin());
         hasLowerCaseLitters.setChecked(options.isHasLowerCaseLitters());
-        hasAppearCaseLitters.setChecked(options.isHasAppearCaseLitters());
+        hasAppearCaseLitters.setChecked(options.isHasUpperCaseLitters());
         hasNumbers.setChecked(options.isHasNumbers());
         hasSymbols.setChecked(options.isHasSymbols());
         length.setText(String.valueOf(options.getLength()));

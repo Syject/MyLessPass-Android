@@ -56,18 +56,25 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private String uuid;
+
         public ImageButton removeButton;
         public TextView siteTextView;
         public TextView loginTextView;
 
         public ViewHolder(View v) {
             super(v);
-            removeButton = (ImageButton) v.findViewById(R.id.list_item_remove_image_button);
             siteTextView = (TextView) v.findViewById(R.id.list_item_site_text_view);
             loginTextView = (TextView) v.findViewById(R.id.list_item_login_text_view);
+
+            removeButton = (ImageButton) v.findViewById(R.id.list_item_remove_image_button);
+            removeButton.setOnClickListener(view -> {
+
+            });
         }
 
         private void bind(Options options) {
+            uuid = options.getUuid();
             siteTextView.setText(options.getSite());
             loginTextView.setText(options.getLogin());
         }

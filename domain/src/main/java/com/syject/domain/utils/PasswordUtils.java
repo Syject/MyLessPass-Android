@@ -62,13 +62,13 @@ public class PasswordUtils implements IPasswordUtils {
 
         return Observable.just(rules)
                 .map(rs -> {
-                    if (template.isHasLowerCaseLitters())
+                    if (template.hasLowerCaseLetters())
                         rs.add(LOWERCASE);
-                    if (template.isHasAppearCaseLitters())
+                    if (template.hasUpperCaseLetters())
                         rs.add(UPPERCASE);
-                    if (template.isHasNumbers())
+                    if (template.hasNumbers())
                         rs.add(NUMBERS);
-                    if (template.isHasSymbols())
+                    if (template.hasSymbols())
                         rs.add(SYMBOLS);
                     return rs;
                 });

@@ -29,24 +29,16 @@ public class KeysInteractor implements IKeysInteractor {
     }
 
     @Override
-    public Observable<Void> saveOptions(Options options) {
+    public Observable<Boolean> saveOptions(Options options) {
 
-        return lesspassApi.getAllOptions()
-                .filter(optionsRequests -> {
-                    for (Options option: optionsRequests) {
-                        if (options.getLogin().equals(option.getLogin())) {
-                            return false;
-                        }
-                    }
-                    return true;
-                })
-                .flatMap(o -> lesspassApi.saveOptions(options))
-                .map(optionsRequest -> null);
+        //TODO check options before save (if exist)
+        return lesspassApi.saveOptions(options)
+                .map(optionsRequest -> true);
     }
 
     @Override
     public Observable<Void> removeOptions(Options options) {
-        return null;
+        return lesspassApi.deleteOption(options.getUuid());
     }
 
     @Override

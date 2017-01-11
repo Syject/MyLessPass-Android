@@ -10,5 +10,5 @@ public interface ILessPassPresenter {
     void saveOptionsAsDefault();
     void initFields();
     Observable<Void> signOut();
-    Observable<Void> save();
+    Observable<Boolean> save();
 }

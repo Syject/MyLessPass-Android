@@ -8,7 +8,7 @@ import rx.Observable;
 
 public interface IKeysInteractor {
 
-    Observable<Void> saveOptions(Options options);
+    Observable<Boolean> saveOptions(Options options);
     Observable<Void> removeOptions(Options options);
     Observable<List<Options>> getOptions();
 }
