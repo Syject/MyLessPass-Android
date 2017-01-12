@@ -10,4 +10,5 @@ public interface Preferences {
     boolean isSignedIn();
     String options();
     String token();
+    String sessionInfo();
 }

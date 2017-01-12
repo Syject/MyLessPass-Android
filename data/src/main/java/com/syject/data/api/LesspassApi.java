@@ -1,8 +1,11 @@
 package com.syject.data.api;
 
+import com.syject.data.api.base.ApiBase;
+import com.syject.data.api.base.RestApi;
 import com.syject.data.api.entities.TokenResponse;
 import com.syject.data.api.entities.UserRequest;
 import com.syject.data.api.entities.UserResponse;
+import com.syject.data.entities.LesspassSessionInfo;
 import com.syject.data.entities.Options;
 
 import java.io.IOException;
@@ -15,11 +18,11 @@ import rx.Observable;
 
 public class LesspassApi extends ApiBase implements ILesspassApi {
 
-    private final String basicAuthHeader;
     private final RestApi restApi;
+    private final ISessionInfoHolder sessionHolder;
 
-    public LesspassApi(String url, String token) {
-        basicAuthHeader = "JWT " + token;
+    public LesspassApi(String url, ISessionInfoHolder sessionHolder) {
+        this.sessionHolder = sessionHolder;
         this.addInterceptor(new AuthInterceptor());
         this.restApi = createRetrofitApi(url, RestApi.class);
     }
@@ -27,12 +30,16 @@ public class LesspassApi extends ApiBase implements ILesspassApi {
     private class AuthInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
 
-            return chain.proceed(request.newBuilder()
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", basicAuthHeader)
-                        .build());
+            Request.Builder builder = chain.request().newBuilder();
+            builder.addHeader("Content-Type", "application/json");
+
+            LesspassSessionInfo sessionInfo = sessionHolder.getSessionInfo();
+            if (sessionInfo != null) {
+                builder.addHeader("Authorization", sessionInfo.toString());
+            }
+
+            return chain.proceed(builder.build());
         }
     }
 

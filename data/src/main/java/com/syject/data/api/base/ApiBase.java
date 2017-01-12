@@ -1,4 +1,4 @@
-package com.syject.data.api;
+package com.syject.data.api.base;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class ApiBase {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(provideHttpClient())
-                .build();
+                    .build();
 
         return retrofit.create(service);
     }

@@ -3,6 +3,7 @@ package com.syject.data.preferences;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.syject.data.entities.LesspassSessionInfo;
 import com.syject.data.entities.Options;
 
 import org.androidannotations.annotations.EBean;
@@ -26,19 +27,19 @@ public class PreferencesManager {
         return gson.fromJson(preferences.options().get(), Options.class);
     }
 
-    public void setToken(String token) {
-        preferences.edit().token().put(token).apply();
-    }
-
-    public String getToken() {
-        return preferences.token().get();
-    }
-
     public void setSignIn(boolean isSignIn) {
         preferences.edit().isSignedIn().put(isSignIn).apply();
     }
 
     public boolean isSignIn() {
         return preferences.isSignedIn().get();
+    }
+
+    public void setLesspassSessionInfo(LesspassSessionInfo sessionInfo) {
+        preferences.edit().sessionInfo().put(gson.toJson(sessionInfo)).apply();
+    }
+
+    public LesspassSessionInfo getLesspassSessionInfo() {
+        return gson.fromJson(preferences.sessionInfo().get(), LesspassSessionInfo.class);
     }
 }

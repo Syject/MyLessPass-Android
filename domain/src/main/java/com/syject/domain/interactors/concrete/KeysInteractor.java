@@ -1,7 +1,8 @@
 package com.syject.domain.interactors.concrete;
 
 import com.syject.data.api.ILesspassApi;
-import com.syject.data.api.LesspassApi;
+import com.syject.data.api.base.ApiFactory;
+import com.syject.data.api.base.IApiFactory;
 import com.syject.data.entities.Options;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IKeysInteractor;
@@ -22,10 +23,12 @@ public class KeysInteractor implements IKeysInteractor {
     @Bean
     protected PreferencesManager preferences;
 
+    @Bean(ApiFactory.class)
+    protected IApiFactory apiFactory;
+
     @AfterInject
     protected void initData() {
-        //TODO Replace init of host and gerinng token
-        lesspassApi = new LesspassApi("https://lesspass.com", preferences.getToken());
+        lesspassApi = apiFactory.createLesspassApi();
     }
 
     @Override

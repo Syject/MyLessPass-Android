@@ -1,8 +1,10 @@
 package com.syject.domain.interactors.concrete;
 
 import com.syject.data.api.ILesspassApi;
-import com.syject.data.api.LesspassApi;
+import com.syject.data.api.base.ApiFactory;
+import com.syject.data.api.base.IApiFactory;
 import com.syject.data.api.entities.UserRequest;
+import com.syject.data.entities.LesspassSessionInfo;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IAuthInteractor;
 
@@ -20,10 +22,12 @@ public class AuthInteractor implements IAuthInteractor {
     @Bean
     protected PreferencesManager preferences;
 
+    @Bean(ApiFactory.class)
+    protected IApiFactory apiFactory;
+
     @AfterInject
     protected void initData() {
-        //TODO Replace init of host and gerinng token
-        lesspassApi = new LesspassApi("https://lesspass.com", preferences.getToken());
+        lesspassApi = apiFactory.createLesspassApi();
     }
 
     @Override
@@ -31,7 +35,7 @@ public class AuthInteractor implements IAuthInteractor {
 
         return lesspassApi.requestToken(new UserRequest(email, password))
                 .map(token -> {
-                    preferences.setToken(token);
+                    preferences.setLesspassSessionInfo(new LesspassSessionInfo(token));
                     preferences.setSignIn(true);
                     return null;
                 });
@@ -53,7 +57,7 @@ public class AuthInteractor implements IAuthInteractor {
     public Observable<Void> signOut() {
         return Observable.just(null)
                 .map(n -> {
-                    preferences.setToken(null);
+                    preferences.setLesspassSessionInfo(null);
                     preferences.setSignIn(false);
                     return null;
                 });

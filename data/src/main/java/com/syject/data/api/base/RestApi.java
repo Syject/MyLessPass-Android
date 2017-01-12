@@ -1,4 +1,4 @@
-package com.syject.data.api;
+package com.syject.data.api.base;
 
 import com.syject.data.api.entities.OptionsResponse;
 import com.syject.data.api.entities.TokenResponse;
