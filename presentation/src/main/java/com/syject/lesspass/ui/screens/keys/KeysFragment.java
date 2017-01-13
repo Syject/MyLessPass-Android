@@ -42,7 +42,7 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
 
     RecyclerView.LayoutManager layoutManager;
 
-    List<Options> options;
+    List<Options> optionsList;
 
     private static final Comparator<Options> ALPHABETICAL_COMPARATOR = (a, b) -> a.getSite().compareTo(b.getSite());
 
@@ -60,9 +60,18 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
                     return null;
                 })
                 .subscribe(opts -> {
-                    options = opts;
+                    optionsList = opts;
                     layoutManager = new LinearLayoutManager(getActivity());
                     adapter = new KeysAdapter(opts, ALPHABETICAL_COMPARATOR);
+                    adapter.setCallBack((options) ->
+                            presenter.removeOptions(options)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(n -> {
+                                        adapter.remove(options);
+                                        optionsList.remove(options);
+                                    })
+                    );
 
                     keysRecyclerView.setLayoutManager(layoutManager);
                     keysRecyclerView.setAdapter(adapter);
@@ -85,7 +94,7 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<Options> filteredModelList = filter(options, newText);
+        final List<Options> filteredModelList = filter(optionsList, newText);
         adapter.replaceAll(filteredModelList);
         keysRecyclerView.scrollToPosition(0);
         return true;

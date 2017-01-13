@@ -9,4 +9,5 @@ import rx.Observable;
 public interface IKeysPresenter {
 
     Observable<List<Options>> getOptions();
+    Observable<Void> removeOptions(Options options);
 }

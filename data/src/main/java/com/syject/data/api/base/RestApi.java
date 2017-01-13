@@ -31,6 +31,6 @@ public interface RestApi {
     @GET("/api/passwords/")
     Observable<OptionsResponse> getAllOptions();
 
-    @DELETE("/api/passwords/{uuid}")
-    Observable<Response<Void>> deleteOption(@Path("uuid") String uuid);
+    @DELETE("/api/passwords/{id}")
+    Observable<Response<Void>> deleteOption(@Path("id") String id);
 }

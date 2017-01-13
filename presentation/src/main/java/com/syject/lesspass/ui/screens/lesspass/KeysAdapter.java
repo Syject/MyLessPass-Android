@@ -16,6 +16,7 @@ import java.util.List;
 
 public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
 
+    private KeysCallBack callBack;
     private final Comparator<Options> comparator;
     private final SortedList<Options> sortedList = new SortedList<>(Options.class, new SortedList.Callback<Options>() {
         @Override
@@ -54,9 +55,9 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
         }
     });
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        private String uuid;
+        private Options options;
 
         public ImageButton removeButton;
         public TextView siteTextView;
@@ -68,13 +69,11 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
             loginTextView = (TextView) v.findViewById(R.id.list_item_login_text_view);
 
             removeButton = (ImageButton) v.findViewById(R.id.list_item_remove_image_button);
-            removeButton.setOnClickListener(view -> {
-
-            });
+            removeButton.setOnClickListener(view -> callBack.onRemoveButtonClick(options));
         }
 
         private void bind(Options options) {
-            uuid = options.getUuid();
+            this.options = options;
             siteTextView.setText(options.getSite());
             loginTextView.setText(options.getLogin());
         }
@@ -131,5 +130,13 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
         }
         sortedList.addAll(models);
         sortedList.endBatchedUpdates();
+    }
+
+    public interface KeysCallBack {
+        void onRemoveButtonClick(Options options);
+    }
+
+    public void setCallBack(KeysCallBack callBack) {
+        this.callBack = callBack;
     }
 }

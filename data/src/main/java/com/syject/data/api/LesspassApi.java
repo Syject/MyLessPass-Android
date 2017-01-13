@@ -14,6 +14,7 @@ import java.util.List;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import rx.Observable;
 
 public class LesspassApi extends ApiBase implements ILesspassApi {
@@ -24,6 +25,7 @@ public class LesspassApi extends ApiBase implements ILesspassApi {
     public LesspassApi(String url, ISessionInfoHolder sessionHolder) {
         this.sessionHolder = sessionHolder;
         this.addInterceptor(new AuthInterceptor());
+        this.addLoggingInterceptor(HttpLoggingInterceptor.Level.BODY);
         this.restApi = createRetrofitApi(url, RestApi.class);
     }
 
@@ -67,8 +69,8 @@ public class LesspassApi extends ApiBase implements ILesspassApi {
     }
 
     @Override
-    public Observable<Void> deleteOption(String uuid) {
-        return restApi.deleteOption(uuid)
+    public Observable<Void> deleteOption(String id) {
+        return restApi.deleteOption(id)
                 .map(r -> null);
     }
 

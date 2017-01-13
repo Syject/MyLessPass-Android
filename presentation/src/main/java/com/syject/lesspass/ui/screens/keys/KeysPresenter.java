@@ -46,4 +46,9 @@ public class KeysPresenter implements IPresenter<IKeysView>, IKeysPresenter{
     public Observable<List<Options>> getOptions() {
         return keysInteractor.getOptions();
     }
+
+    @Override
+    public Observable<Void> removeOptions(Options options) {
+        return keysInteractor.removeOptions(options);
+    }
 }

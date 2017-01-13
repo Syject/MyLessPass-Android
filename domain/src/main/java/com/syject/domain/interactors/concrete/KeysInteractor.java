@@ -41,12 +41,11 @@ public class KeysInteractor implements IKeysInteractor {
 
     @Override
     public Observable<Void> removeOptions(Options options) {
-        return lesspassApi.deleteOption(options.getUuid());
+        return lesspassApi.deleteOption(options.getId());
     }
 
     @Override
     public Observable<List<Options>> getOptions() {
-        return lesspassApi.getAllOptions()
-                .map(optionsRequests -> optionsRequests);
+        return lesspassApi.getAllOptions();
     }
 }

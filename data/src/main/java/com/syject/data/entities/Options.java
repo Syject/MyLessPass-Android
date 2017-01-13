@@ -2,7 +2,7 @@ package com.syject.data.entities;
 
 public class Options {
 
-    private String uuid;
+    private String id;
     private String site;
     private String login;
     private boolean hasLowerCaseLitters;
@@ -14,7 +14,7 @@ public class Options {
     private int version;
 
     public static class Builder {
-        private String uuid;
+        private String id;
         private String site;
         private String login;
         private boolean hasLowerCaseLetters = true;
@@ -25,8 +25,8 @@ public class Options {
         private int counter = 1;
         private int version = 2;
 
-        public Builder uuid(String id) {
-            this.uuid = id;
+        public Builder id(String id) {
+            this.id = id;
             return this;
         }
 
@@ -87,7 +87,7 @@ public class Options {
         hasSymbols = builder.hasSymbols;
         length = builder.length;
         counter = builder.counter;
-        uuid = builder.uuid;
+        id = builder.id;
         site = builder.site;
         login = builder.login;
         version = builder.version;
@@ -107,7 +107,7 @@ public class Options {
         if (length != options.length) return false;
         if (counter != options.counter) return false;
         if (version != options.version) return false;
-        if (uuid != null ? !uuid.equals(options.uuid) : options.uuid != null) return false;
+        if (id != null ? !id.equals(options.id) : options.id != null) return false;
         if (site != null ? !site.equals(options.site) : options.site != null) return false;
         return login != null ? login.equals(options.login) : options.login == null;
 
@@ -115,7 +115,7 @@ public class Options {
 
     @Override
     public int hashCode() {
-        int result = uuid != null ? uuid.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (site != null ? site.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
@@ -152,8 +152,8 @@ public class Options {
         return hasLowerCaseLitters;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
     public String getSite() {
