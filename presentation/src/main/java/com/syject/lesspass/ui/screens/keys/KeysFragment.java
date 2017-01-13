@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.syject.data.entities.Options;
 import com.syject.lesspass.R;
@@ -35,6 +38,15 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
     @ViewById
     RecyclerView keysRecyclerView;
 
+    @ViewById
+    LinearLayout contentLinearLayout;
+
+    @ViewById
+    LinearLayout loading;
+
+    @ViewById
+    RelativeLayout nothingToShow;
+
     @Bean
     KeysPresenter presenter;
 
@@ -52,6 +64,7 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
     protected void initViews() {
         presenter.setView(this);
 
+        loading.setVisibility(View.VISIBLE);
         subscription = presenter.getOptions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -59,23 +72,39 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
                     Log.w("", throwable);
                     return null;
                 })
-                .subscribe(opts -> {
-                    optionsList = opts;
-                    layoutManager = new LinearLayoutManager(getActivity());
-                    adapter = new KeysAdapter(opts, ALPHABETICAL_COMPARATOR);
-                    adapter.setCallBack((options) ->
-                            presenter.removeOptions(options)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(n -> {
-                                        adapter.remove(options);
-                                        optionsList.remove(options);
-                                    })
-                    );
+                .subscribe(this::showContent);
+    }
 
-                    keysRecyclerView.setLayoutManager(layoutManager);
-                    keysRecyclerView.setAdapter(adapter);
-                });
+    private void showContent(List<Options> opts) {
+        loading.setVisibility(View.GONE);
+        if (opts.isEmpty()) {
+            nothingToShow.setVisibility(View.VISIBLE);
+        } else {
+            contentLinearLayout.setVisibility(View.VISIBLE);
+            optionsList = opts;
+            layoutManager = new LinearLayoutManager(getActivity());
+            adapter = new KeysAdapter(opts, ALPHABETICAL_COMPARATOR);
+            adapter.setCallBack((options) ->
+                    presenter.removeOptions(options)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(n -> {
+                                adapter.remove(options);
+                                onOptionRemove(options);
+                            })
+            );
+
+            keysRecyclerView.setLayoutManager(layoutManager);
+            keysRecyclerView.setAdapter(adapter);
+        }
+    }
+
+    private void onOptionRemove(Options options) {
+        optionsList.remove(options);
+        if (optionsList.isEmpty()) {
+            contentLinearLayout.setVisibility(View.GONE);
+            nothingToShow.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

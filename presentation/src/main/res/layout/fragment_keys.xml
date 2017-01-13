@@ -10,7 +10,9 @@
                   style="@style/LessPassLeftRight"
                   android:orientation="vertical"
                   android:layout_width="match_parent"
-                  android:layout_height="match_parent">
+                  android:layout_height="match_parent"
+                  android:id="@+id/content_linear_layout"
+                  android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/keys_recycler_view"
@@ -19,5 +21,45 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/nothing_to_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/nothing_to_show"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/loading"
+            android:layout_gravity="center"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="128dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"/>
+
+    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
