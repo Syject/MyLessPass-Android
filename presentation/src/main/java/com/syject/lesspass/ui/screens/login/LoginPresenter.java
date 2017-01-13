@@ -115,6 +115,6 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Override
     public void destroy() {
         this.view = null;
-        subscription.unsubscribe();
+        if (subscription != null) subscription.unsubscribe();
     }
 }
