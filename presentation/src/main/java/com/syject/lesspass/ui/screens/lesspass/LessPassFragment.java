@@ -1,6 +1,5 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
-import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -114,8 +113,6 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     Subscription subscription;
 
-    OnActionSelectedListener callback;
-
     private Menu menu;
 
     @AfterViews
@@ -156,20 +153,20 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     public interface OnActionSelectedListener {
-        public void onSignInSelected();
-        public void onSignOut();
-        public void onKeysSelected();
+        void onSignInSelected();
+        void onSignOut();
+        void onKeysSelected();
     }
 
     @OptionsItem(R.id.action_sign_in)
     void signIn() {
-        callback.onSignInSelected();
+        getActivityCallback().onSignInSelected();
     }
 
     @OptionsItem(R.id.action_sign_out)
     void signOut() {
         presenter.signOut()
-                .subscribe(n -> callback.onSignOut());
+                .subscribe(n -> getActivityCallback().onSignOut());
     }
 
     @OptionsItem(R.id.action_save)
@@ -185,7 +182,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @OptionsItem(R.id.action_keys)
     void keys() {
-        callback.onKeysSelected();
+        getActivityCallback().onKeysSelected();
     }
 
     @Override
@@ -365,13 +362,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         subscription.unsubscribe();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof LessPassActivity) {
-            callback = (OnActionSelectedListener) context;
-        }
+    private OnActionSelectedListener getActivityCallback() {
+        return (OnActionSelectedListener) getActivity();
     }
 
     private void toggleGeneratedPassword(boolean isGeneratedPasswordExpanded) {

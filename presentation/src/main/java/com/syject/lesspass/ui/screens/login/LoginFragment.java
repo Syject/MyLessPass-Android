@@ -1,6 +1,5 @@
 package com.syject.lesspass.ui.screens.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.syject.lesspass.R;
-import com.syject.lesspass.ui.screens.lesspass.LessPassActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -32,8 +30,6 @@ public class LoginFragment extends Fragment implements ILoginView {
 
     @InstanceState
     boolean isExpanded;
-
-    int textLength;
 
     String textExpanded;
 
@@ -79,7 +75,6 @@ public class LoginFragment extends Fragment implements ILoginView {
 
         presenter.setView(this);
 
-        textLength = getString(R.string.use_master_password).length();
         textExpanded = getString(R.string.use_master_password_expand);
         masterPasswordCheckBox.setOnClickListener(view -> {
             isExpanded = !isExpanded;
@@ -105,6 +100,10 @@ public class LoginFragment extends Fragment implements ILoginView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
+    }
+
+    public interface OnActionSelectedListener {
+        void onSignedIn();
     }
 
     @Override
@@ -187,6 +186,10 @@ public class LoginFragment extends Fragment implements ILoginView {
         presenter.destroy();
     }
 
+    private OnActionSelectedListener getActivityCallBack() {
+        return (OnActionSelectedListener) getActivity();
+    }
+
     private void setIsInProgress(boolean isInProgress, Button button, ProgressBar progress) {
         if (isInProgress) {
             button.setTextSize(0);
@@ -198,9 +201,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     }
 
     private void onActionSuccess(Button button, ProgressBar progress) {
-        Intent openMainActivity= new Intent(getActivity(), LessPassActivity_.class);
-        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(openMainActivity);
+        getActivityCallBack().onSignedIn();
         setIsInProgress(false, button, progress);
     }
 

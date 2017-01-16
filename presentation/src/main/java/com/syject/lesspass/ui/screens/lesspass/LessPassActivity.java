@@ -5,12 +5,15 @@ import android.support.v4.app.Fragment;
 
 import com.syject.lesspass.ui.BaseActivity;
 import com.syject.lesspass.ui.screens.keys.KeysFragment_;
+import com.syject.lesspass.ui.screens.login.LoginFragment;
 import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
 import org.androidannotations.annotations.EActivity;
 
 @EActivity
-public class LessPassActivity extends BaseActivity implements LessPassFragment.OnActionSelectedListener {
+public class LessPassActivity extends BaseActivity implements
+        LessPassFragment.OnActionSelectedListener,
+        LoginFragment.OnActionSelectedListener {
 
     @Override
     protected Fragment startFragment() {
@@ -24,12 +27,20 @@ public class LessPassActivity extends BaseActivity implements LessPassFragment.O
 
     @Override
     public void onSignOut() {
-        getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(getIntent());
+        resetActivity();
     }
 
     @Override
     public void onKeysSelected() {
         showFragment(KeysFragment_.builder().build(), true, true);
+    }
+
+    @Override
+    public void onSignedIn() {
+        resetActivity();
+    }
+
+    private void resetActivity() {
+        LessPassActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
     }
 }
