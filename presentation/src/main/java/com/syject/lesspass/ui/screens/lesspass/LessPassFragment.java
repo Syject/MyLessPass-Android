@@ -158,7 +158,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @OptionsItem(R.id.action_sign_in)
     void signIn() {
         getFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.fragment_container, LoginFragment_.builder().build())
                 .addToBackStack(null)
                 .commit();
