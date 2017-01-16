@@ -188,6 +188,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     @OptionsItem(R.id.action_keys)
     void keys() {
         getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.fragment_container, KeysFragment_.builder().build())
                 .addToBackStack(null)
                 .commit();

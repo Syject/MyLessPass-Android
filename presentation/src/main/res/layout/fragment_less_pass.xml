@@ -1,246 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.screens.lesspass.LessPassActivity_">
 
-    <LinearLayout
-        style="@style/LessPassLeftRight"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/site_edit_text"
-            style="@style/LessPassFields"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_computer_black_18dp"
-            android:drawableStart="@drawable/ic_computer_black_18dp"
-            android:hint="@string/hint_site"/>
-
-        <EditText
-            android:id="@+id/login_edit_text"
-            style="@style/LessPassFields"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_person_black_18dp"
-            android:drawableStart="@drawable/ic_person_black_18dp"
-            android:hint="@string/hint_login"/>
-
-        <EditText
-            android:id="@+id/master_password_edit_text"
-            style="@style/LessPassFields"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/ic_secure"
-            android:drawableStart="@android:drawable/ic_secure"
-            android:hint="@string/hint_master_password"
-            android:inputType="textPassword"/>
-
-        <RelativeLayout
-            android:id="@+id/password_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/generate"
-                    style="@style/LessPassButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/generate"/>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:indeterminate="true"
-                    android:theme="@style/WhiteProgress"
-                    android:translationZ="10dp"
-                    android:visibility="invisible"/>
-            </FrameLayout>
-
-            <LinearLayout
-                android:id="@+id/generated_password_linear_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/settings_image_button"
-                android:layout_toStartOf="@+id/settings_image_button"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/copy_button"
-                    style="@style/LessPassButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_content_copy_white_18dp"/>
-
-                <TextView
-                    android:id="@+id/password"
-                    style="@style/LessPassBorder"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:textColor="@color/colorPrimary"/>
-
-                <ImageButton
-                    android:id="@+id/visibility_image_button"
-                    style="@style/LessPassButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_visibility_white_18dp"/>
-
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/settings_image_button"
-                style="@style/LessPassButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:padding="15dp"
-                android:src="@drawable/ic_tune_black_18dp"/>
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/mandatory_error_text_view"
-            style="@style/LessPassError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
-            android:text="@string/mandatory"
-            android:visibility="gone"/>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/password_options_liner_layout"
+            style="@style/LessPassLeftRight"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                style="?android:listSeparatorTextViewStyle"
+            <EditText
+                android:id="@+id/site_edit_text"
+                style="@style/LessPassFields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/password_options"/>
+                android:drawableLeft="@drawable/ic_computer_black_18dp"
+                android:drawableStart="@drawable/ic_computer_black_18dp"
+                android:hint="@string/hint_site"/>
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/login_edit_text"
+                style="@style/LessPassFields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:drawableLeft="@drawable/ic_person_black_18dp"
+                android:drawableStart="@drawable/ic_person_black_18dp"
+                android:hint="@string/hint_login"/>
 
-                <CheckBox
-                    android:id="@+id/hasLowerCaseLitters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/abc"/>
+            <EditText
+                android:id="@+id/master_password_edit_text"
+                style="@style/LessPassFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/ic_secure"
+                android:drawableStart="@android:drawable/ic_secure"
+                android:hint="@string/hint_master_password"
+                android:inputType="textPassword"/>
 
-                <CheckBox
-                    android:id="@+id/hasAppearCaseLitters"
-                    style="@style/LessPass_marginLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/abc_upper"/>
-
-                <CheckBox
-                    android:id="@+id/hasNumbers"
-                    style="@style/LessPass_marginLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/numbers"/>
-
-                <CheckBox
-                    android:id="@+id/hasSymbols"
-                    style="@style/LessPass_marginLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/symbols"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/password_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/length"/>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/length"
-                    android:layout_width="0dp"
+                    <Button
+                        android:id="@+id/generate"
+                        style="@style/LessPassButtonPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/generate"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:theme="@style/WhiteProgress"
+                        android:translationZ="10dp"
+                        android:visibility="invisible"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/generated_password_linear_layout"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/edit_text_border"
-                    android:inputType="number"
-                    android:padding="8dp"
-                    android:text="@string/default_lenght"/>
+                    android:layout_toLeftOf="@+id/settings_image_button"
+                    android:layout_toStartOf="@+id/settings_image_button"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/counter"/>
+                    <ImageButton
+                        android:id="@+id/copy_button"
+                        style="@style/LessPassButtonPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_content_copy_white_18dp"/>
 
-                <EditText
-                    android:id="@+id/counter"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/password"
+                        style="@style/LessPassBorder"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <ImageButton
+                        android:id="@+id/visibility_image_button"
+                        style="@style/LessPassButtonPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_visibility_white_18dp"/>
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/settings_image_button"
+                    style="@style/LessPassButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/edit_text_border"
-                    android:inputType="number"
-                    android:padding="8dp"
-                    android:text="@string/default_counter"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_tune_black_18dp"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <Button
-                android:id="@+id/save_as_default_button"
-                style="@style/LessPassButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/mandatory_error_text_view"
+                style="@style/LessPassError"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:drawableLeft="@drawable/ic_done_black_18dp"
-                android:enabled="false"
-                android:minHeight="25dp"
-                android:minWidth="130dp"
-                android:padding="4dp"
+                android:padding="16dp"
+                android:text="@string/mandatory"
+                android:visibility="gone"/>
 
-                android:text="@string/saved_as_def"/>
+            <LinearLayout
+                android:id="@+id/password_options_liner_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView"
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="@string/password_options"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <CheckBox
+                        android:id="@+id/hasLowerCaseLitters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/abc"/>
+
+                    <CheckBox
+                        android:id="@+id/hasAppearCaseLitters"
+                        style="@style/LessPass_marginLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/abc_upper"/>
+
+                    <CheckBox
+                        android:id="@+id/hasNumbers"
+                        style="@style/LessPass_marginLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/numbers"/>
+
+                    <CheckBox
+                        android:id="@+id/hasSymbols"
+                        style="@style/LessPass_marginLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/symbols"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/length"/>
+
+                    <EditText
+                        android:id="@+id/length"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_border"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:text="@string/default_lenght"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/counter"/>
+
+                    <EditText
+                        android:id="@+id/counter"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_text_border"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:text="@string/default_counter"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/save_as_default_button"
+                    style="@style/LessPassButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_done_black_18dp"
+                    android:enabled="false"
+                    android:minHeight="25dp"
+                    android:minWidth="130dp"
+                    android:padding="4dp"
+
+                    android:text="@string/saved_as_def"/>
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
