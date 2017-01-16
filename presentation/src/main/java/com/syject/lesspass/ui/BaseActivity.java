@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (savedInstanceState == null)
-            showFragment(startFragment(), false);
+            showFragment(startFragment(), false, false);
     }
 
     protected abstract Fragment startFragment();
@@ -29,14 +29,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         return R.layout.activity_fragment;
     }
 
-    protected void showFragment(Fragment fragment, boolean isAddToBackStack) {
+    protected void showFragment(Fragment fragment, boolean isAddToBackStack, boolean withAnimation) {
         FragmentManager fm = getSupportFragmentManager();
 
-        FragmentTransaction ft = fm.beginTransaction()
-                .replace(R.id.fragment_container, fragment);
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (withAnimation) {
+            ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        }
+
+        ft.replace(R.id.fragment_container, fragment);
 
         if (isAddToBackStack) {
-            ft.addToBackStack(null);
+            ft.addToBackStack(fragment.getClass().getName());
         }
         ft.commit();
     }

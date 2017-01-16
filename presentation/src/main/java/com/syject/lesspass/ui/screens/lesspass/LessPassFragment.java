@@ -1,6 +1,6 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
-import android.content.Intent;
+import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,8 +23,6 @@ import com.syject.data.entities.Options;
 import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.utils.SystemUtils;
 import com.syject.lesspass.R;
-import com.syject.lesspass.ui.screens.keys.KeysFragment_;
-import com.syject.lesspass.ui.screens.login.LoginFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -116,6 +114,8 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     Subscription subscription;
 
+    OnActionSelectedListener callback;
+
     private Menu menu;
 
     @AfterViews
@@ -155,23 +155,21 @@ public class LessPassFragment extends Fragment implements ILessPassView {
                 });
     }
 
+    public interface OnActionSelectedListener {
+        public void onSignInSelected();
+        public void onSignOut();
+        public void onKeysSelected();
+    }
+
     @OptionsItem(R.id.action_sign_in)
     void signIn() {
-        getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.fragment_container, LoginFragment_.builder().build())
-                .addToBackStack(null)
-                .commit();
+        callback.onSignInSelected();
     }
 
     @OptionsItem(R.id.action_sign_out)
     void signOut() {
         presenter.signOut()
-                .subscribe(n -> {
-                    Intent openMainActivity = new Intent(getActivity(), getActivity().getClass());
-                    openMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(openMainActivity);
-                });
+                .subscribe(n -> callback.onSignOut());
     }
 
     @OptionsItem(R.id.action_save)
@@ -187,11 +185,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @OptionsItem(R.id.action_keys)
     void keys() {
-        getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.fragment_container, KeysFragment_.builder().build())
-                .addToBackStack(null)
-                .commit();
+        callback.onKeysSelected();
     }
 
     @Override
@@ -369,6 +363,15 @@ public class LessPassFragment extends Fragment implements ILessPassView {
         super.onDestroyView();
         presenter.destroy();
         subscription.unsubscribe();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof LessPassActivity) {
+            callback = (OnActionSelectedListener) context;
+        }
     }
 
     private void toggleGeneratedPassword(boolean isGeneratedPasswordExpanded) {
