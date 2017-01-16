@@ -77,7 +77,7 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
 
     private void showContent(List<Options> opts) {
         loading.setVisibility(View.GONE);
-        if (opts.isEmpty()) {
+        if (opts == null || opts.isEmpty()) {
             nothingToShow.setVisibility(View.VISIBLE);
         } else {
             contentLinearLayout.setVisibility(View.VISIBLE);
