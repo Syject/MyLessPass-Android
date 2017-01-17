@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LessPass</string>
+    <string name="app_name">My LessPass</string>
     <string name="security">Security</string>
     <string name="log_in">Log In</string>
     <string name="settings">Settings</string>
