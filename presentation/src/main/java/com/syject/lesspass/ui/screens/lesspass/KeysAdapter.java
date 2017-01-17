@@ -55,7 +55,7 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
         }
     });
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Options options;
 
@@ -65,6 +65,7 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
 
         public ViewHolder(View v) {
             super(v);
+            v.setOnClickListener(this);
             siteTextView = (TextView) v.findViewById(R.id.list_item_site_text_view);
             loginTextView = (TextView) v.findViewById(R.id.list_item_login_text_view);
 
@@ -76,6 +77,11 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
             this.options = options;
             siteTextView.setText(options.getSite());
             loginTextView.setText(options.getLogin());
+        }
+
+        @Override
+        public void onClick(View view) {
+            callBack.onKeysClick(options);
         }
     }
 
@@ -134,6 +140,7 @@ public class KeysAdapter extends RecyclerView.Adapter<KeysAdapter.ViewHolder> {
 
     public interface KeysCallBack {
         void onRemoveButtonClick(Options options);
+        void onKeysClick(Options options);
     }
 
     public void setCallBack(KeysCallBack callBack) {

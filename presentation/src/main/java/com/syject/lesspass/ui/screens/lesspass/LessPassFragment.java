@@ -39,6 +39,8 @@ import rx.Subscription;
 @EFragment(R.layout.fragment_less_pass)
 public class LessPassFragment extends Fragment implements ILessPassView {
 
+    protected static final String TAG_OPTIONS = "Options";
+
     @Bean
     protected PreferencesManager preferences;
 
@@ -120,7 +122,12 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
         presenter.setView(this);
 
-        presenter.initFields();
+        Options options = (Options) getArguments().getSerializable(TAG_OPTIONS);
+        if (options != null) {
+            setOptions(options);
+        } else {
+            presenter.initFields();
+        }
 
         togglePasswordOptions(isSettingsExpanded);
         toggleGeneratedPassword(isGeneratedPasswordExpanded);
@@ -320,10 +327,10 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     public void setOptions(Options options) {
         siteEditText.setText(options.getSite());
         loginEditText.setText(options.getLogin());
-        hasLowerCaseLitters.setChecked(options.isHasLowerCaseLitters());
-        hasAppearCaseLitters.setChecked(options.isHasUpperCaseLitters());
-        hasNumbers.setChecked(options.isHasNumbers());
-        hasSymbols.setChecked(options.isHasSymbols());
+        hasLowerCaseLitters.setChecked(options.isLowercase());
+        hasAppearCaseLitters.setChecked(options.isUppercase());
+        hasNumbers.setChecked(options.isNumbers());
+        hasSymbols.setChecked(options.isSymbols());
         length.setText(String.valueOf(options.getLength()));
         counter.setText(String.valueOf(options.getCounter()));
     }

@@ -84,15 +84,24 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
             optionsList = opts;
             layoutManager = new LinearLayoutManager(getActivity());
             adapter = new KeysAdapter(opts, ALPHABETICAL_COMPARATOR);
-            adapter.setCallBack((options) ->
+            adapter.setCallBack(new KeysAdapter.KeysCallBack() {
+                @Override
+                public void onRemoveButtonClick(Options options) {
                     presenter.removeOptions(options)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(n -> {
                                 adapter.remove(options);
                                 onOptionRemove(options);
-                            })
-            );
+                            });
+                }
+
+                @Override
+                public void onKeysClick(Options options) {
+                    OnActionSelectedListener callback = (OnActionSelectedListener) getActivity();
+                    callback.onKeyClicked(options);
+                }
+            });
 
             keysRecyclerView.setLayoutManager(layoutManager);
             keysRecyclerView.setAdapter(adapter);
@@ -159,5 +168,9 @@ public class KeysFragment extends Fragment implements SearchView.OnQueryTextList
         super.onDestroy();
         presenter.destroy();
         subscription.unsubscribe();
+    }
+
+    public interface OnActionSelectedListener {
+        void onKeyClicked(Options options);
     }
 }

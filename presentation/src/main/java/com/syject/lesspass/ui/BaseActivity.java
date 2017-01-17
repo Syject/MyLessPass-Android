@@ -2,9 +2,9 @@ package com.syject.lesspass.ui;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.AnimRes;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (savedInstanceState == null)
-            showFragment(startFragment(), false, false);
+            showFragment(startFragment(), false);
     }
 
     protected abstract Fragment startFragment();
@@ -29,13 +29,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         return R.layout.activity_fragment;
     }
 
-    protected void showFragment(Fragment fragment, boolean isAddToBackStack, boolean withAnimation) {
-        FragmentManager fm = getSupportFragmentManager();
+    protected void showFragment(Fragment fragment, boolean isAddToBackStack) {
+        showFragment(fragment, isAddToBackStack, 0, 0, 0, 0);
+    }
 
-        FragmentTransaction ft = fm.beginTransaction();
+    protected void showFragmentWithLTRAnimation(Fragment fragment, boolean isAddToBackStack) {
+        showFragment(fragment, isAddToBackStack, R.anim.enter_from_left, R.anim.exit_to_right,
+                R.anim.enter_from_right, R.anim.exit_to_left);
+    }
 
-        if (withAnimation) {
-            ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+    protected void showFragmentWithRTLAnimation(Fragment fragment, boolean isAddToBackStack) {
+        showFragment(fragment, isAddToBackStack, R.anim.enter_from_right, R.anim.exit_to_left,
+                R.anim.enter_from_left, R.anim.exit_to_right);
+
+    }
+
+    private void showFragment(Fragment fragment, boolean isAddToBackStack, @AnimRes int enter,
+                              @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (enter != 0 && exit != 0 && popEnter != 0 && popExit != 0) {
+            ft.setCustomAnimations(enter, exit, popEnter, popExit);
         }
 
         ft.replace(R.id.fragment_container, fragment);
@@ -43,6 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isAddToBackStack) {
             ft.addToBackStack(fragment.getClass().getName());
         }
+
         ft.commit();
     }
 }

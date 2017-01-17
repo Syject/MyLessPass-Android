@@ -1,14 +1,16 @@
 package com.syject.data.entities;
 
-public class Options {
+import java.io.Serializable;
+
+public class Options implements Serializable {
 
     private String id;
     private String site;
     private String login;
-    private boolean hasLowerCaseLitters;
-    private boolean hasUpperCaseLitters;
-    private boolean hasNumbers;
-    private boolean hasSymbols;
+    private boolean lowercase;
+    private boolean uppercase;
+    private boolean numbers;
+    private boolean symbols;
     private int length;
     private int counter;
     private int version;
@@ -81,10 +83,10 @@ public class Options {
     }
 
     private Options(Builder builder) {
-        hasLowerCaseLitters = builder.hasLowerCaseLetters;
-        hasUpperCaseLitters = builder.hasUpperCaseLetters;
-        hasNumbers = builder.hasNumbers;
-        hasSymbols = builder.hasSymbols;
+        lowercase = builder.hasLowerCaseLetters;
+        uppercase = builder.hasUpperCaseLetters;
+        numbers = builder.hasNumbers;
+        symbols = builder.hasSymbols;
         length = builder.length;
         counter = builder.counter;
         id = builder.id;
@@ -100,10 +102,10 @@ public class Options {
 
         Options options = (Options) o;
 
-        if (hasLowerCaseLitters != options.hasLowerCaseLitters) return false;
-        if (hasUpperCaseLitters != options.hasUpperCaseLitters) return false;
-        if (hasNumbers != options.hasNumbers) return false;
-        if (hasSymbols != options.hasSymbols) return false;
+        if (lowercase != options.lowercase) return false;
+        if (uppercase != options.uppercase) return false;
+        if (numbers != options.numbers) return false;
+        if (symbols != options.symbols) return false;
         if (length != options.length) return false;
         if (counter != options.counter) return false;
         if (version != options.version) return false;
@@ -118,10 +120,10 @@ public class Options {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (site != null ? site.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (hasLowerCaseLitters ? 1 : 0);
-        result = 31 * result + (hasUpperCaseLitters ? 1 : 0);
-        result = 31 * result + (hasNumbers ? 1 : 0);
-        result = 31 * result + (hasSymbols ? 1 : 0);
+        result = 31 * result + (lowercase ? 1 : 0);
+        result = 31 * result + (uppercase ? 1 : 0);
+        result = 31 * result + (numbers ? 1 : 0);
+        result = 31 * result + (symbols ? 1 : 0);
         result = 31 * result + length;
         result = 31 * result + counter;
         result = 31 * result + version;
@@ -136,20 +138,20 @@ public class Options {
         return length;
     }
 
-    public boolean isHasSymbols() {
-        return hasSymbols;
+    public boolean isSymbols() {
+        return symbols;
     }
 
-    public boolean isHasNumbers() {
-        return hasNumbers;
+    public boolean isNumbers() {
+        return numbers;
     }
 
-    public boolean isHasUpperCaseLitters() {
-        return hasUpperCaseLitters;
+    public boolean isUppercase() {
+        return uppercase;
     }
 
-    public boolean isHasLowerCaseLitters() {
-        return hasLowerCaseLitters;
+    public boolean isLowercase() {
+        return lowercase;
     }
 
     public String getId() {
