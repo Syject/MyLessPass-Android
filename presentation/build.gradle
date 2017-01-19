@@ -16,6 +16,7 @@ android {
         versionName globalConfiguration.getAt("androidVersionName")
         testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
         testApplicationId globalConfiguration.getAt("testApplicationId")
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: globalConfiguration.getAt("HOCKEYAPP_APP_ID")]
     }
 
     compileOptions {
@@ -24,6 +25,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -46,6 +51,7 @@ dependencies {
     compile presentationDependencies.rxBinding
     compile presentationDependencies.design
     compile presentationDependencies.recyclerview
+    compile presentationDependencies.hockey
 
     androidTestCompile presentationTestDependencies.espresso
     androidTestCompile presentationTestDependencies.junit

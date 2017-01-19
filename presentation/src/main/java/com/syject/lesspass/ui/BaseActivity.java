@@ -10,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.syject.lesspass.R;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+import net.hockeyapp.android.metrics.MetricsManager;
+
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -18,8 +22,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResId());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if (savedInstanceState == null)
-            showFragment(startFragment(), false);
+        if (savedInstanceState == null) showFragment(startFragment(), false);
+
+        checkForUpdates();
+        MetricsManager.register(this, getApplication());
     }
 
     protected abstract Fragment startFragment();
@@ -60,5 +66,36 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         ft.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkForCrashes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterManagers();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterManagers();
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
     }
 }

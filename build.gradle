@@ -23,6 +23,7 @@ allprojects {
         androidVersionName = "1.0.1"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         testApplicationId = 'com.syject.lesspass.test'
+        HOCKEYAPP_APP_ID = "5ff79f16f6c441d1bf7445f0b439f28d"
     }
 }
 
