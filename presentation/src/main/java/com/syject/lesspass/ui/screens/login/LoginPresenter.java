@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.syject.data.preferences.PreferencesManager;
 import com.syject.domain.interactors.IAuthInteractor;
 import com.syject.domain.interactors.concrete.AuthInteractor;
 import com.syject.lesspass.presenters.IPresenter;
@@ -23,9 +22,6 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
     @Bean(AuthInteractor.class)
     protected IAuthInteractor authInteractor;
 
-    @Bean
-    protected PreferencesManager preferences;
-
     private ILoginView view;
 
     private Context context;
@@ -38,23 +34,8 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
 
     @Override
     public void login() {
-
         subscription = Observable.just(true)
-                .filter(n -> {
-                    if (TextUtils.isEmpty(view.getEmail())) {
-                        view.onEmailEmpty();
-                        n = false;
-                    }
-                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(view.getEmail()).matches()) {
-                        view.onEmailInvalid();
-                        n = false;
-                    }
-                    if (TextUtils.isEmpty(view.getLesspassPassword())) {
-                        view.onPasswordEmpty();
-                        n = false;
-                    }
-                    return n;
-                })
+                .filter(n -> isFormValid(view.getEmail(), view.getLesspassPassword()))
                 .subscribe(n -> {
                     view.onSigningIn();
                     authInteractor.login(view.getEmail(), view.getLesspassPassword())
@@ -66,23 +47,8 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
 
     @Override
     public void register() {
-
         subscription = Observable.just(true)
-                .filter(n -> {
-                    if (TextUtils.isEmpty(view.getEmail())) {
-                        view.onEmailEmpty();
-                        n = false;
-                    }
-                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(view.getEmail()).matches()) {
-                        view.onEmailInvalid();
-                        n = false;
-                    }
-                    if (TextUtils.isEmpty(view.getLesspassPassword())) {
-                        view.onPasswordEmpty();
-                        n = false;
-                    }
-                    return n;
-                })
+                .filter(n -> isFormValid(view.getEmail(), view.getLesspassPassword()))
                 .subscribe(n -> {
                     view.onRegistering();
                     authInteractor.register(view.getEmail(), view.getLesspassPassword())
@@ -92,9 +58,21 @@ public class LoginPresenter implements ILoginPresenter, IPresenter<ILoginView> {
                 });
     }
 
-    @Override
-    public void rememberPassword() {
-
+    private boolean isFormValid(String email, String lesspassPassword) {
+        boolean isValid = true;
+        if (TextUtils.isEmpty(email)) {
+            view.onEmailEmpty();
+            isValid = false;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            view.onEmailInvalid();
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(lesspassPassword)) {
+            view.onPasswordEmpty();
+            isValid = false;
+        }
+        return isValid;
     }
 
     @Override

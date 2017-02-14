@@ -91,7 +91,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void checkForUpdates() {
-        // Remove this for store builds!
         UpdateManager.register(this);
     }
 

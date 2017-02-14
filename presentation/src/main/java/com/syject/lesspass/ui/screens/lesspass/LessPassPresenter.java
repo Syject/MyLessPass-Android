@@ -31,12 +31,12 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
 
     private static final int HIDE_PASSWORD_AFTER_GENERATE = 30000; //30 sec
     private static final int HIDE_PASSWORD_AFTER_COPY = 10000; //10 sec
+    private static final int MAX_PASSWORD_LENGTH = 40;
+
     private final Handler handler = new Handler();
 
     private ILessPassView lessPassView;
-
     private Runnable runnable;
-
     private Context context;
 
     @Bean(PasswordInteractor.class)
@@ -76,12 +76,15 @@ public class LessPassPresenter implements ILessPassPresenter, IPresenter<ILessPa
         String counter = lessPassView.getCounter();
 
         if (!LessPassHelper.validateNumbers(length)) {
-            lessPassView.onValidationLengthError();
+            lessPassView.onLengthError(R.string.incorrect_length);
             return;
         }
-
+        if (LessPassHelper.getInt(length) > MAX_PASSWORD_LENGTH) {
+            lessPassView.onLengthError(R.string.too_long_length);
+            return;
+        }
         if (!LessPassHelper.validateNumbers(counter)) {
-            lessPassView.onValidationCounterError();
+            lessPassView.onCounterError(R.string.incorrect_counter);
             return;
         }
 

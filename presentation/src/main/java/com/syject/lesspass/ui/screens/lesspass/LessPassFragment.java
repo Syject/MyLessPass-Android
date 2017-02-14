@@ -1,5 +1,6 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -160,20 +161,20 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     public interface OnActionSelectedListener {
-        void onSignInSelected();
-        void onSignOut();
-        void onKeysSelected();
+        void onSignInActionSelected();
+        void onSignOutActionSelected();
+        void onKeysActionSelected();
     }
 
     @OptionsItem(R.id.action_sign_in)
     void signIn() {
-        getActivityCallback().onSignInSelected();
+        getActivityCallback().onSignInActionSelected();
     }
 
     @OptionsItem(R.id.action_sign_out)
     void signOut() {
         presenter.signOut()
-                .subscribe(n -> getActivityCallback().onSignOut());
+                .subscribe(n -> getActivityCallback().onSignOutActionSelected());
     }
 
     @OptionsItem(R.id.action_save)
@@ -189,7 +190,7 @@ public class LessPassFragment extends Fragment implements ILessPassView {
 
     @OptionsItem(R.id.action_keys)
     void keys() {
-        getActivityCallback().onKeysSelected();
+        getActivityCallback().onKeysActionSelected();
     }
 
     @Override
@@ -336,13 +337,13 @@ public class LessPassFragment extends Fragment implements ILessPassView {
     }
 
     @Override
-    public void onValidationLengthError() {
-        length.setError("Length is incorrect!");
+    public void onLengthError(@StringRes int stringResError) {
+        length.setError(getString(stringResError));
     }
 
     @Override
-    public void onValidationCounterError() {
-        counter.setError("Counter is incorrect!");
+    public void onCounterError(@StringRes int stringResError) {
+        counter.setError(getString(stringResError));
     }
 
     @Override

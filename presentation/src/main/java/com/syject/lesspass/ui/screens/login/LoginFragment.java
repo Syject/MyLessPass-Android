@@ -6,10 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -19,7 +16,6 @@ import com.syject.lesspass.R;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_login)
@@ -28,28 +24,11 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Bean
     LoginPresenter presenter;
 
-    @InstanceState
-    boolean isExpanded;
-
-    String textExpanded;
-
     @ViewById
     EditText emailEditText;
 
     @ViewById
     EditText lessPasswordEditText;
-
-    @ViewById
-    EditText hostEditText;
-
-    @ViewById
-    CheckBox masterPasswordCheckBox;
-
-    @ViewById
-    ImageButton paramsImageButton;
-
-    @ViewById
-    LinearLayout hostLinerLayout;
 
     @ViewById
     Button signInButton;
@@ -75,20 +54,6 @@ public class LoginFragment extends Fragment implements ILoginView {
 
         presenter.setView(this);
 
-        textExpanded = getString(R.string.use_master_password_expand);
-        masterPasswordCheckBox.setOnClickListener(view -> {
-            isExpanded = !isExpanded;
-            toggleText(isExpanded);
-        });
-
-        paramsImageButton.setOnClickListener(view -> {
-            if (hostLinerLayout.getVisibility() == View.GONE) {
-                hostLinerLayout.setVisibility(View.VISIBLE);
-            } else {
-                hostLinerLayout.setVisibility(View.GONE);
-            }
-        });
-
         RxView.clicks(signInButton)
                 .subscribe(v -> presenter.login());
 
@@ -102,10 +67,6 @@ public class LoginFragment extends Fragment implements ILoginView {
         setHasOptionsMenu(false);
     }
 
-    public interface OnActionSelectedListener {
-        void onSignedIn();
-    }
-
     @Override
     public String getEmail() {
         return emailEditText.getText().toString();
@@ -114,11 +75,6 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Override
     public String getLesspassPassword() {
         return lessPasswordEditText.getText().toString();
-    }
-
-    @Override
-    public String getHostUrl() {
-        return hostEditText.getText().toString();
     }
 
     @Override
@@ -168,6 +124,27 @@ public class LoginFragment extends Fragment implements ILoginView {
         emailEditText.setError(getString(R.string.email_is_invalid));
     }
 
+    private void onActionSuccess(Button button, ProgressBar progress) {
+        getActivityCallBack().onSignedIn();
+        setIsInProgress(false, button, progress);
+    }
+
+    private void onActionFail(Button button, ProgressBar progress) {
+        lessPasswordEditText.setText(null);
+        setIsInProgress(false, button, progress);
+        emailPasswordErrorTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void setIsInProgress(boolean isInProgress, Button button, ProgressBar progress) {
+        if (isInProgress) {
+            button.setTextSize(0);
+            progress.setVisibility(View.VISIBLE);
+        } else {
+            button.setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonTextSize);
+            progress.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -190,34 +167,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         return (OnActionSelectedListener) getActivity();
     }
 
-    private void setIsInProgress(boolean isInProgress, Button button, ProgressBar progress) {
-        if (isInProgress) {
-            button.setTextSize(0);
-            progress.setVisibility(View.VISIBLE);
-        } else {
-            button.setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonTextSize);
-            progress.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void onActionSuccess(Button button, ProgressBar progress) {
-        getActivityCallBack().onSignedIn();
-        setIsInProgress(false, button, progress);
-    }
-
-    private void onActionFail(Button button, ProgressBar progress) {
-        lessPasswordEditText.setText(null);
-        setIsInProgress(false, button, progress);
-        emailPasswordErrorTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void toggleText(boolean isExpanded) {
-        if (isExpanded) {
-            masterPasswordCheckBox.append(textExpanded);
-        } else {
-            String string = masterPasswordCheckBox.getText().toString();
-            String resStr = string.substring(0, string.length() - textExpanded.length());
-            masterPasswordCheckBox.setText(resStr);
-        }
+    public interface OnActionSelectedListener {
+        void onSignedIn();
     }
 }

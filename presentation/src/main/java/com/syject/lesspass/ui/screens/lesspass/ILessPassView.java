@@ -1,5 +1,7 @@
 package com.syject.lesspass.ui.screens.lesspass;
 
+import android.support.annotation.StringRes;
+
 import com.syject.data.entities.Options;
 
 public interface ILessPassView {
@@ -18,8 +20,8 @@ public interface ILessPassView {
     boolean hasNumbers();
     boolean hasSymbols();
 
-    void onValidationLengthError();
-    void onValidationCounterError();
+    void onLengthError(@StringRes int stringResError);
+    void onCounterError(@StringRes int stringResError);
     void onValidationFailed();
     void onValidationSuccess();
     void onPasswordGenerating();
@@ -29,5 +31,4 @@ public interface ILessPassView {
     void onOptionsSave(boolean isSaved);
 
     void setOptions(Options options);
-
 }

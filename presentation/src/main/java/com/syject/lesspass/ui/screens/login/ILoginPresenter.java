@@ -4,5 +4,4 @@ public interface ILoginPresenter {
 
     void login();
     void register();
-    void rememberPassword();
 }

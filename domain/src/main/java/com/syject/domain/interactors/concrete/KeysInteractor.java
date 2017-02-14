@@ -34,7 +34,6 @@ public class KeysInteractor implements IKeysInteractor {
     @Override
     public Observable<Boolean> saveOptions(Options options) {
 
-        //TODO check options before save (if exist)
         return lesspassApi.saveOptions(options)
                 .map(optionsRequest -> true);
     }

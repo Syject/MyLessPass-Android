@@ -54,6 +54,10 @@
     <string name="options_saved">Options saved.</string>
     <string name="options_exist">This Options already exist!</string>
 
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="nothing_to_show">There are no saved Options to show.</string>
+    
+    <string name="too_long_length">Length is too long</string>
+    <string name="incorrect_length">Length is incorrect!</string>
+    <string name="incorrect_counter">Counter is incorrect!</string>
 </resources>

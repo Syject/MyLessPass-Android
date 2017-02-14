@@ -20,25 +20,23 @@ public class LessPassActivity extends BaseActivity implements
         LoginFragment.OnActionSelectedListener,
         KeysFragment.OnActionSelectedListener {
 
-    static final int PICK_OPTIONS = 1;
-
     @Override
     protected Fragment startFragment() {
         return LessPassFragment_.builder().build();
     }
 
     @Override
-    public void onSignInSelected() {
+    public void onSignInActionSelected() {
         showFragmentWithRTLAnimation(LoginFragment_.builder().build(), true);
     }
 
     @Override
-    public void onSignOut() {
+    public void onSignOutActionSelected() {
         resetActivity();
     }
 
     @Override
-    public void onKeysSelected() {
+    public void onKeysActionSelected() {
         showFragmentWithRTLAnimation(KeysFragment_.builder().build(), true);
     }
 
